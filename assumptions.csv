@@ -1,0 +1,9 @@
+Installation,Parameter,Value,Unit
+GCV Proposed Installation #1 (Standalone Solar),Solar Size,300,MW
+GCV Proposed Installation #1 (Standalone Solar),Inverter Capacity,250,MW
+GCV Proposed Installation #1 (Standalone Solar),Solar System Cost,1.35,$/Watt-DC
+GCV Proposed Installation #2 (Standalone Storage),Storage Capacity,50,MW
+GCV Proposed Installation #2 (Standalone Storage),Storage Energy,200,MWh
+GCV Proposed Installation #2 (Standalone Storage),Round Trip Efficiency,1,
+GCV Proposed Installation #2 (Standalone Storage),Storage System Cost,375,$/kWh
+GCV Proposed Installation #3 (Combined Solar + Storage System),Solar Size,300,MW
