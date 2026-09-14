@@ -240,22 +240,24 @@ add_text(s, Inches(0.55), Inches(1.55), Inches(12.2), Inches(0.4),
           size=14, color=INK_SECONDARY, italic=True)
 
 rows = [
-    ('Standalone Solar', 'Delivered output = min(Solar Shape × 300 MW-DC, 250 MW-AC inverter limit). Revenue = Σ(delivered MW × RT price).'),
-    ('Standalone Storage', '4-hr duration (200 MWh ÷ 50 MW). 1 full cycle/day: charge the day\'s 4 lowest-price hours, discharge the 4 highest-price hours. Perfect real-time price foresight; round-trip efficiency = 100% (per given input); no degradation or cycling cost; energy arbitrage only (no capacity/ancillary revenue).'),
-    ('Combined Solar + Storage', 'Solar identical to standalone. Storage charges first from otherwise-clipped/curtailed solar (zero cost), then tops up from the grid at the day\'s lowest remaining prices; discharge unchanged.'),
+    ('Standalone Solar', 'Delivered output = min(Solar Shape × 300 MW-DC, 250 MW-AC inverter limit). Revenue = Σ(delivered MW × RT price).', 0.62),
+    ('Standalone Storage', '4-hr duration (200 MWh ÷ 50 MW). 1 full cycle/day: charge the day\'s 4 lowest-price hours, discharge the 4 highest-price hours. Perfect real-time price foresight; round-trip efficiency = 100% (per given input); no degradation or cycling cost; energy arbitrage only in this base case (see Reserve Scenario row below).', 1.0),
+    ('Combined Solar + Storage', 'Solar identical to standalone. Storage charges first from otherwise-clipped/curtailed solar (zero cost), then tops up from the grid at the day\'s lowest remaining prices; discharge unchanged.', 0.78),
+    ('Reserve Scenario (Q2d)', 'Extension beyond the base exercise: reserve capacity valued at $1.25/MW-hr (midpoint of $1–1.5/MW). Headroom = up-reserve capacity; footroom = down-reserve capacity. Solar cannot provide reserve (variable, non-dispatchable) → $0. Storage offers footroom while charging, headroom while discharging, both simultaneously while idle → +$0.91M. Details on Slide 8.', 1.08),
 ]
 
-ty = Inches(2.15)
+ty = Inches(1.95)
 col1_w, col2_w = Inches(2.9), Inches(9.35)
-row_h = Inches(1.35)
 add_rect(s, Inches(0.55), ty, col1_w + col2_w, Pt(2), GRIDLINE)
-for i, (label, desc) in enumerate(rows):
-    ry = ty + Inches(0.15) + i * row_h
-    add_text(s, Inches(0.55), ry, col1_w, Inches(0.5), label, size=15, color=BLUE, bold=True)
-    add_text(s, Inches(3.55), ry, col2_w, row_h - Inches(0.2), desc, size=13, color=INK_SECONDARY, line_spacing=1.15)
-    add_rect(s, Inches(0.55), ry + row_h - Inches(0.15), col1_w + col2_w, Pt(1), GRIDLINE)
+ry = ty + Inches(0.15)
+for label, desc, h in rows:
+    row_h = Inches(h)
+    add_text(s, Inches(0.55), ry, col1_w, Inches(0.4), label, size=14.5, color=BLUE, bold=True)
+    add_text(s, Inches(3.55), ry, col2_w, row_h, desc, size=12, color=INK_SECONDARY, line_spacing=1.1)
+    ry = ry + row_h + Inches(0.16)
+    add_rect(s, Inches(0.55), ry - Inches(0.1), col1_w + col2_w, Pt(1), GRIDLINE)
 
-add_text(s, Inches(0.55), Inches(6.4), Inches(12.2), Inches(0.5),
+add_text(s, Inches(0.55), ry + Inches(0.08), Inches(12.2), Inches(0.5),
           'All simplifications are intentional given the exercise\'s time-box (Q2b/2c each capped at ~1 hour); more rigorous operating assumptions are proposed in Q3b.',
           size=12, color=INK_MUTED, italic=True)
 
