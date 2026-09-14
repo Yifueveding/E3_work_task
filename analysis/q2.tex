@@ -19,8 +19,8 @@
 
 \section*{Inputs and Notation}
 
-All revenue is calculated from hourly 2023 NYISO N.Y.C. zone day-ahead prices.
-For hour $t$, let $p_t$ be the day-ahead energy price (\$/MWh) and $s_t$ be the
+All revenue is calculated from hourly 2023 NYISO N.Y.C. zone real-time prices.
+For hour $t$, let $p_t$ be the real-time energy price (\$/MWh) and $s_t$ be the
 normalized solar production shape. Solar output is assumed to be available for
 the full hour, so MW and MWh are numerically equivalent for each hourly interval.
 
@@ -36,7 +36,7 @@ Storage power capacity & 50 MW \\
 Storage energy capacity & 200 MWh \\
 Storage duration & $200\text{ MWh} / 50\text{ MW} = 4$ hours \\
 Round-trip efficiency & 100\% per provided input \\
-Dispatch simplification & One full charge/discharge cycle per day with perfect day-ahead foresight \\
+Dispatch simplification & One full charge/discharge cycle per day with perfect real-time foresight \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -51,7 +51,7 @@ G_t = \min(s_t \times 300\text{ MW},\ 250\text{ MW})
 \]
 
 Annual backcast solar revenue is the sum of hourly delivered energy times the
-day-ahead price:
+real-time price:
 
 \[
 R_{\text{solar}} = \sum_{t=1}^{8760} G_t \times p_t
@@ -64,13 +64,13 @@ Using the 2023 hourly data:
 \]
 
 \[
-R_{\text{solar}} = \$18{,}803{,}819
+R_{\text{solar}} = \$18{,}910{,}425
 \]
 
 \[
 \text{Solar capture price}
-= \frac{\$18{,}803{,}819}{551{,}454\text{ MWh}}
-= \$34.10/\text{MWh}
+= \frac{\$18{,}910{,}425}{551{,}454\text{ MWh}}
+= \$34.29/\text{MWh}
 \]
 
 The inverter cap clips 372 MWh, equal to 0.07\% of gross solar generation, so
@@ -100,19 +100,19 @@ Annual standalone storage revenue is:
 \[
 R_{\text{storage}}
 = \sum_{d=1}^{365} R_{\text{storage},d}
-= \$1{,}723{,}678
+= \$2{,}473{,}753
 \]
 
 Normalized by installed capacity:
 
 \[
-\frac{\$1{,}723{,}678}{50{,}000\text{ kW}}
-= \$34.47/\text{kW-year}
+\frac{\$2{,}473{,}753}{50{,}000\text{ kW}}
+= \$49.48/\text{kW-year}
 \]
 
 \[
-\frac{\$1{,}723{,}678}{200{,}000\text{ kWh}}
-= \$8.62/\text{kWh-year}
+\frac{\$2{,}473{,}753}{200{,}000\text{ kWh}}
+= \$12.37/\text{kWh-year}
 \]
 
 \section*{Q2c. Combined Solar + Storage Revenue}
@@ -159,17 +159,17 @@ standalone storage case. Across 2023, the model uses:
 The resulting combined revenues are:
 
 \[
-R_{\text{combined solar}} = \$18{,}803{,}819
+R_{\text{combined solar}} = \$18{,}910{,}425
 \]
 
 \[
-R_{\text{combined storage}} = \$1{,}731{,}379
+R_{\text{combined storage}} = \$2{,}480{,}611
 \]
 
 \[
 R_{\text{combined total}}
-= \$18{,}803{,}819 + \$1{,}731{,}379
-= \$20{,}535{,}198
+= \$18{,}910{,}425 + \$2{,}480{,}611
+= \$21{,}391{,}036
 \]
 
 The interaction benefit versus building standalone solar and standalone storage
@@ -178,13 +178,13 @@ separately is:
 \[
 R_{\text{combined total}} -
 \left(R_{\text{solar}} + R_{\text{storage}}\right)
-= \$20{,}535{,}198 - (\$18{,}803{,}819 + \$1{,}723{,}678)
-= \$7{,}702
+= \$21{,}391{,}036 - (\$18{,}910{,}425 + \$2{,}473{,}753)
+= \$6{,}857
 \]
 
 \[
-\frac{\$7{,}702}{\$20{,}527{,}496}
-= 0.038\%
+\frac{\$6{,}857}{\$21{,}384{,}178}
+= 0.032\%
 \]
 
 \section*{Summary}
@@ -195,9 +195,9 @@ R_{\text{combined total}} -
 \toprule
 \textbf{Configuration} & \textbf{2023 Backcast Revenue} & \textbf{Key Method} \\
 \midrule
-Standalone solar & \$18.804M & Hourly solar output $\times$ hourly DA price \\
-Standalone storage & \$1.724M & Daily four-low / four-high arbitrage \\
-Combined solar + storage & \$20.535M & Solar revenue plus storage with clipped solar charging first \\
+Standalone solar & \$18.910M & Hourly solar output $\times$ hourly RT price \\
+Standalone storage & \$2.474M & Daily four-low / four-high arbitrage \\
+Combined solar + storage & \$21.391M & Solar revenue plus storage with clipped solar charging first \\
 \bottomrule
 \end{tabular}
 \end{table}

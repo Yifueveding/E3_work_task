@@ -168,9 +168,9 @@ slide_header(s, 'Executive Summary', 'Combined solar + storage is the recommende
 
 tiles = [
     ('$33.94/MWh', '2023 avg. NYISO N.Y.C.\nday-ahead price'),
-    ('$18.8M', 'Standalone solar\n2023 backcast revenue'),
-    ('$1.7M', 'Standalone storage\n2023 backcast revenue'),
-    ('$20.5M', 'Combined system\n2023 backcast revenue'),
+    ('$18.9M', 'Standalone solar\n2023 backcast revenue'),
+    ('$2.5M', 'Standalone storage\n2023 backcast revenue'),
+    ('$21.4M', 'Combined system\n2023 backcast revenue'),
 ]
 tw, th, gap = Inches(2.75), Inches(1.35), Inches(0.25)
 x0 = Inches(0.55)
@@ -181,7 +181,7 @@ add_bullets(s, Inches(0.55), Inches(3.35), Inches(6.0), Inches(3.4), [
     'Prices peak in winter (Feb, cold-snap heating demand) and again in summer (Jul, A/C peak); shoulder months (spring/fall) trough well below average.',
     'Solar earns slightly above the flat average because its output aligns with summer peak-price hours; it earns below average in winter.',
     'Storage value tracks price volatility, not price level — Jul and Feb (largest daily price swings) are its best months.',
-    "Pairing solar + storage adds only a marginal energy-arbitrage benefit today (+0.04%) since inverter clipping is minimal, but the combined package's cheaper per-unit equipment pricing saves ~$35M in capex vs. building both standalone.",
+    "Pairing solar + storage adds only a marginal energy-arbitrage benefit today (+0.03%) since inverter clipping is minimal, but the combined package's cheaper per-unit equipment pricing saves ~$35M in capex vs. building both standalone.",
 ], size=14.5)
 
 add_rect(s, Inches(6.85), Inches(3.35), Inches(5.95), Inches(3.55), SURFACE)
@@ -189,7 +189,7 @@ box = s.shapes[-1]; box.line.color.rgb = BLUE; box.line.width = Pt(1.25)
 add_text(s, Inches(7.1), Inches(3.55), Inches(5.4), Inches(0.4), 'RECOMMENDATION', size=12, color=BLUE, bold=True)
 add_text(s, Inches(7.1), Inches(3.9), Inches(5.4), Inches(0.6), 'Combined Solar + Storage', size=21, color=INK, bold=True)
 add_bullets(s, Inches(7.1), Inches(4.55), Inches(5.4), Inches(2.2), [
-    '~22-year simple payback — matches standalone solar, so storage is effectively "added for free" from a payback standpoint.',
+    '~21-year simple payback — matches standalone solar, so storage is effectively "added for free" from a payback standpoint.',
     '~$35M cheaper in capex than building solar and storage as two separate standalone projects.',
     "Better hedges the coming decade: storage's value should rise as solar buildout erodes solar's own capture price.",
 ], size=13.5)
@@ -236,12 +236,12 @@ s = add_slide(); set_bg(s)
 slide_header(s, 'Q2  ·  Methodology', 'Revenue Modeling Approach & Key Assumptions', 5)
 
 add_text(s, Inches(0.55), Inches(1.55), Inches(12.2), Inches(0.4),
-          'Price basis: Day-Ahead (DA) prices used throughout — the standard settlement mechanism for a utility-scale resource\'s bulk energy position.',
+          'Price basis: Real-Time (RT) prices used throughout — reflects the actual settlement value of energy at the time it is physically delivered.',
           size=14, color=INK_SECONDARY, italic=True)
 
 rows = [
-    ('Standalone Solar', 'Delivered output = min(Solar Shape × 300 MW-DC, 250 MW-AC inverter limit). Revenue = Σ(delivered MW × DA price).'),
-    ('Standalone Storage', '4-hr duration (200 MWh ÷ 50 MW). 1 full cycle/day: charge the day\'s 4 lowest-price hours, discharge the 4 highest-price hours. Perfect day-ahead price foresight; round-trip efficiency = 100% (per given input); no degradation or cycling cost; energy arbitrage only (no capacity/ancillary revenue).'),
+    ('Standalone Solar', 'Delivered output = min(Solar Shape × 300 MW-DC, 250 MW-AC inverter limit). Revenue = Σ(delivered MW × RT price).'),
+    ('Standalone Storage', '4-hr duration (200 MWh ÷ 50 MW). 1 full cycle/day: charge the day\'s 4 lowest-price hours, discharge the 4 highest-price hours. Perfect real-time price foresight; round-trip efficiency = 100% (per given input); no degradation or cycling cost; energy arbitrage only (no capacity/ancillary revenue).'),
     ('Combined Solar + Storage', 'Solar identical to standalone. Storage charges first from otherwise-clipped/curtailed solar (zero cost), then tops up from the grid at the day\'s lowest remaining prices; discharge unchanged.'),
 ]
 
@@ -266,9 +266,9 @@ s = add_slide(); set_bg(s)
 slide_header(s, 'Q2  ·  Results', '2023 Backcast Revenue by Configuration', 6)
 add_picture_fit(s, IMG + 'q2_revenue_by_config.png', Inches(0.4), Inches(1.5), Inches(7.9), Inches(5.4))
 add_bullets(s, Inches(8.5), Inches(1.7), Inches(4.35), Inches(4.9), [
-    'Standalone Solar: $18.80M (551,454 MWh delivered; avg. capture price $34.10/MWh).',
-    'Standalone Storage: $1.72M ($34.47/kW-yr, $8.62/kWh-yr) — energy arbitrage only.',
-    'Combined System: $20.54M — essentially the sum of the two standalone revenues.',
+    'Standalone Solar: $18.91M (551,454 MWh delivered; avg. capture price $34.29/MWh).',
+    'Standalone Storage: $2.47M ($49.48/kW-yr, $12.37/kWh-yr) — energy arbitrage only.',
+    'Combined System: $21.39M — essentially the sum of the two standalone revenues.',
     'Solar dominates the revenue stack for all three configurations; storage revenue from energy arbitrage alone is comparatively small.',
 ], size=14)
 
@@ -281,7 +281,7 @@ slide_header(s, 'Q2c  ·  Solar + Storage Interaction', 'The Pairing Benefit Is 
 add_bullets(s, Inches(0.55), Inches(1.7), Inches(6.1), Inches(4.5), [
     'In the combined system, storage can charge from solar output that would otherwise be clipped by the 250 MW inverter limit — at zero marginal cost.',
     'Gross DC solar generation: 551,826 MWh; clipped/curtailed: only 372 MWh (0.07% of gross) — the 300/250 MW (1.2x) DC:AC ratio isn\'t aggressive enough to cause meaningful clipping.',
-    'Combined revenue ($20,535,198) exceeds the simple sum of standalone solar + standalone storage ($20,527,496) by just $7,701 (+0.04%).',
+    'Combined revenue ($21,391,036) exceeds the simple sum of standalone solar + standalone storage ($21,384,178) by just $6,857 (+0.03%).',
 ], size=15, space_after=16)
 
 add_rect(s, Inches(7.1), Inches(1.7), Inches(5.7), Inches(3.0), SURFACE)
@@ -311,7 +311,7 @@ cols = [
         "NYC's Peaker Rule retirements tighten local capacity. Risk: storage cannibalization if buildout outpaces the opportunity.",
     ], ORANGE),
     ('Combined System', 'Interaction benefit should grow', [
-        "Today's interaction (+0.04%) reflects minimal clipping.",
+        "Today's interaction (+0.03%) reflects minimal clipping.",
         'As solar penetration rises, a co-located battery\'s ability to absorb otherwise-curtailed solar becomes more valuable — strengthening the strategic case for pairing.',
     ], INK),
 ]
@@ -363,7 +363,7 @@ add_picture_fit(s, IMG + 'q3_payback_comparison.png', Inches(0.4), Inches(1.5), 
 
 add_rect(s, Inches(0.4), Inches(5.15), Inches(7.7), Inches(0.05), GRIDLINE)
 add_bullets(s, Inches(0.4), Inches(5.3), Inches(7.7), Inches(1.9), [
-    'Simple payback (capex ÷ 2023 backcast revenue, no financing/tax/O&M): Standalone Solar ~22 yrs, Standalone Storage ~44 yrs, Combined ~22 yrs.',
+    'Simple payback (capex ÷ 2023 backcast revenue, no financing/tax/O&M): Standalone Solar ~21 yrs, Standalone Storage ~30 yrs, Combined ~21 yrs.',
 ], size=12.5, color=INK_MUTED)
 
 add_rect(s, Inches(8.35), Inches(1.5), Inches(4.5), Inches(5.35), SURFACE)
@@ -375,7 +375,7 @@ add_bullets(s, Inches(8.6), Inches(2.15), Inches(4.05), Inches(3.2), [
     'Better hedges the Q3a outlook: storage value should rise as solar capture price erodes.',
 ], size=12.5, space_after=12)
 add_text(s, Inches(8.6), Inches(5.35), Inches(4.05), Inches(1.6),
-          'Caveat: standalone storage looks uneconomic here because only day-ahead energy arbitrage was modeled. Real storage revenue also includes capacity & ancillary services (Q3b) — revisit before committing capital.',
+          'Caveat: standalone storage still looks weak here because only real-time energy arbitrage was modeled. Real storage revenue also includes capacity & ancillary services (Q3b) — revisit before committing capital.',
           size=11.5, color=INK_MUTED, italic=True, line_spacing=1.2)
 
 prs.save('GCV_Solar_Storage_Valuation.pptx')

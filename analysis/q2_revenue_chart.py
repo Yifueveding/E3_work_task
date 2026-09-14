@@ -2,10 +2,10 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 
 # Values from q2_revenue.py output
-solar_rev = 18_803_819
-storage_rev = 1_723_678
-combined_solar = 18_803_819
-combined_storage = 1_731_379
+solar_rev = 18_910_425
+storage_rev = 2_473_753
+combined_solar = 18_910_425
+combined_storage = 2_480_611
 combined_total = combined_solar + combined_storage
 standalone_sum = solar_rev + storage_rev
 
@@ -32,7 +32,7 @@ for xi, val in zip(x, [solar_rev/1e6, storage_rev/1e6, combined_total/1e6]):
 
 ax.set_xticks(x); ax.set_xticklabels(labels, color=INK_SECONDARY, fontsize=10.5)
 ax.set_ylabel('2023 Backcast Revenue ($M)', color=INK_SECONDARY, fontsize=10)
-ax.set_title('2023 Backcast Revenue by Configuration (Day-Ahead Price Basis)',
+ax.set_title('2023 Backcast Revenue by Configuration (Real-Time Price Basis)',
               color=INK_PRIMARY, fontsize=13, fontweight='bold', pad=14, loc='left')
 ax.set_ylim(0, combined_total/1e6 * 1.2)
 ax.grid(axis='y', color=GRIDLINE, linewidth=0.8, zorder=0)

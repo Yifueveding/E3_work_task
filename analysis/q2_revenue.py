@@ -10,7 +10,7 @@ with open('hourly_data.csv') as f:
         rows.append({
             'ts': ts,
             'shape': float(row['Solar Shape (Normalized)']),
-            'da': float(row['NYISO (NYC Zone) Historical Day Ahead Energy Price ($/MWh)']),
+            'price': float(row['NYISO (NYC Zone) Real Time Energy Price ($/MWh)']),
         })
 
 SOLAR_MW = 300
@@ -28,7 +28,7 @@ for row in rows:
     delivered = min(dc, INV_MW)
     solar_energy += delivered
     clipped_energy += max(0, dc - INV_MW)
-    solar_revenue += delivered * row['da']
+    solar_revenue += delivered * row['price']
 
 print('=== Q2a: Standalone Solar ===')
 print(f'Delivered energy: {solar_energy:,.0f} MWh')
@@ -43,22 +43,22 @@ by_day = defaultdict(list)
 for row in rows:
     by_day[row['ts'].date()].append(row)
 
-# ---------- Q2b: Standalone Storage (perfect day-ahead foresight, 1 cycle/day, RTE=1) ----------
+# ---------- Q2b: Standalone Storage (perfect real-time foresight, 1 cycle/day, RTE=1) ----------
 storage_revenue = 0.0
 n_full_cycle_days = 0
 for day, day_rows in by_day.items():
-    day_rows_sorted = sorted(day_rows, key=lambda x: x['da'])
+    day_rows_sorted = sorted(day_rows, key=lambda x: x['price'])
     n_charge_hrs = min(int(DURATION_HR), len(day_rows_sorted))
     charge_hrs = day_rows_sorted[:n_charge_hrs]
     discharge_hrs = day_rows_sorted[-n_charge_hrs:]
-    charge_cost = sum(h['da'] for h in charge_hrs) * STOR_MW
-    discharge_rev = sum(h['da'] for h in discharge_hrs) * STOR_MW
+    charge_cost = sum(h['price'] for h in charge_hrs) * STOR_MW
+    discharge_rev = sum(h['price'] for h in discharge_hrs) * STOR_MW
     storage_revenue += (discharge_rev - charge_cost)
     n_full_cycle_days += 1
 
 print('=== Q2b: Standalone Storage ===')
 print(f'Assumption: 1 full charge/discharge cycle per day, {DURATION_HR:.0f}-hr duration (200 MWh / 50 MW),')
-print('perfect day-ahead price foresight, round-trip efficiency = 100% (per given assumption), no degradation/cycling cost.')
+print('perfect real-time price foresight, round-trip efficiency = 100% (per given assumption), no degradation/cycling cost.')
 print(f'Days modeled: {n_full_cycle_days}')
 print(f'2023 backcast revenue: ${storage_revenue:,.0f}')
 print(f'Revenue per kW (of power capacity): ${storage_revenue/(STOR_MW*1000):,.2f}/kW')
@@ -80,11 +80,11 @@ for day, day_rows in by_day.items():
     for h in day_rows:
         dc = h['shape'] * SOLAR_MW
         delivered = min(dc, INV_MW)
-        combined_solar_revenue += delivered * h['da']
+        combined_solar_revenue += delivered * h['price']
 
     # Available clipped solar per hour this day
     clip_by_hour = {h['ts'].hour: max(0, h['shape']*SOLAR_MW - INV_MW) for h in day_rows}
-    price_by_hour = {h['ts'].hour: h['da'] for h in day_rows}
+    price_by_hour = {h['ts'].hour: h['price'] for h in day_rows}
 
     energy_needed = STOR_MWH
     charge_cost = 0.0
@@ -101,22 +101,22 @@ for day, day_rows in by_day.items():
     # capacity headroom in the same hour is ignored for simplicity given negligible magnitude)
     remaining_hours_sorted = sorted(
         [h for h in day_rows if clip_by_hour[h['ts'].hour] == 0],
-        key=lambda x: x['da']
+        key=lambda x: x['price']
     )
     n_grid_hrs = min(int(DURATION_HR), len(remaining_hours_sorted))
     grid_hrs = remaining_hours_sorted[:n_grid_hrs]
     grid_mwh_this_hr = min(STOR_MW, energy_needed / n_grid_hrs) if n_grid_hrs else 0
     for h in grid_hrs:
         take = min(STOR_MW, energy_needed)
-        charge_cost += take * h['da']
+        charge_cost += take * h['price']
         grid_charged_total += take
         energy_needed -= take
         if energy_needed <= 0:
             break
 
     # Discharge: day's top-4 price hours (same as standalone)
-    discharge_hrs = sorted(day_rows, key=lambda x: x['da'])[-int(DURATION_HR):]
-    discharge_rev = sum(h['da'] for h in discharge_hrs) * STOR_MW
+    discharge_hrs = sorted(day_rows, key=lambda x: x['price'])[-int(DURATION_HR):]
+    discharge_rev = sum(h['price'] for h in discharge_hrs) * STOR_MW
 
     combined_storage_revenue += (discharge_rev - charge_cost)
 
