@@ -1,5 +1,6 @@
 \documentclass[11pt]{article}
 \usepackage[margin=0.85in]{geometry}
+\usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{amsmath}
 \usepackage{parskip}
@@ -187,6 +188,70 @@ R_{\text{combined total}} -
 = 0.032\%
 \]
 
+\section*{Q2d. Reserve (Headroom/Footroom) Scenario --- Extension Beyond the Base Exercise}
+
+As a further scenario, we estimate additional revenue each configuration could earn by
+offering NYISO operating reserve capacity, at an assumed reserve price of \$1.25/MW-hr
+(midpoint of the \$1--1.5/MW range). \emph{Headroom} is capacity available to increase
+output on call (up-reserve); \emph{footroom} is capacity available to decrease output on
+call (down-reserve).
+
+Solar can only offer footroom --- it is already running at its irradiance-limited maximum,
+so it has no spare capacity to ramp up. Footroom each hour equals that hour's delivered
+MW, since output could be curtailed to zero on instruction:
+
+\[
+R_{\text{solar reserve}} = \$1.25 \times \sum_t G_t = \$1.25 \times 551{,}454\text{ MWh} = \$689{,}318
+\]
+
+Storage reuses the Q2b/Q2c daily charge/discharge schedule (4 lowest-price hours charge,
+4 highest-price hours discharge, 16 hours idle). While charging it can offer 50 MW of
+footroom (no headroom, since it is already using its full power to charge); while
+discharging the reverse (50 MW headroom, no footroom); while idle it can offer the full
+50 MW of \emph{both} headroom and footroom simultaneously:
+
+\[
+R_{\text{storage reserve}} = \$1.25 \times (365{,}000 + 365{,}000)\text{ MW-hr} = \$912{,}500
+\]
+
+The combined system sums solar's footroom and storage's headroom/footroom, since the
+combined case's dispatch \emph{timing} is unchanged from Q2b/Q2c --- only the charging
+cost source (clipped solar vs. grid) differs:
+
+\[
+R_{\text{combined reserve}} = \$689{,}318 + \$912{,}500 = \$1{,}601{,}818
+\]
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{lrrrr}
+\toprule
+\textbf{Configuration} & \textbf{Energy-Only} & \textbf{Reserve} & \textbf{Energy + Reserve} & \textbf{Reserve Uplift} \\
+\midrule
+Standalone solar & \$18.910M & \$0.689M & \$19.600M & 3.6\% \\
+Standalone storage & \$2.474M & \$0.913M & \$3.386M & 36.9\% \\
+Combined solar + storage & \$21.391M & \$1.602M & \$22.993M & 7.5\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.48\textwidth]{q2_energy_only_by_config.png}\hfill
+\includegraphics[width=0.48\textwidth]{q2_energy_plus_reserve_by_config.png}
+\end{figure}
+
+Storage benefits by far the most in relative terms (+36.9\%) because its reserve capacity
+comes free alongside energy dispatch and, while idle (16 of 24 hours/day), it can stack
+both headroom and footroom at the same time. Solar's uplift is small in absolute dollars
+because footroom only applies to hours it is already delivering, but it is non-trivial
+(+3.6\%) simply because solar runs so many hours. This scenario is illustrative: real
+NYISO reserve products have stricter response-time, minimum-run, and co-optimization
+rules than modeled here, and a resource cannot literally be paid full price for headroom
+and footroom at the same instant if doing so double-counts the same physical capacity
+across products --- a more rigorous treatment is one of the natural extensions noted in
+Q3b.
+
 \section*{Summary}
 
 \begin{table}[h!]
@@ -203,6 +268,8 @@ Combined solar + storage & \$21.391M & Solar revenue plus storage with clipped s
 \end{table}
 
 The combined case produces only a small energy-arbitrage uplift over the
-standalone sum because the solar system clips very little energy in 2023.
+standalone sum because the solar system clips very little energy in 2023. Figures above
+are energy-only; see Q2d for an illustrative reserve (headroom/footroom) scenario layered
+on top.
 
 \end{document}

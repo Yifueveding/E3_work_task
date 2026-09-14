@@ -1,4 +1,4 @@
-"""Build the GCV Solar + Storage Valuation slide deck (10 slides)."""
+"""Build the GCV Solar + Storage Valuation slide deck (11 slides)."""
 from pptx import Presentation
 from pptx.util import Inches, Pt, Emu
 from pptx.dml.color import RGBColor
@@ -105,7 +105,7 @@ def add_bullets(slide, x, y, w, h, items, size=15, color=INK_SECONDARY, font=FON
     return tb
 
 
-def slide_header(slide, kicker, title, n, total=10):
+def slide_header(slide, kicker, title, n, total=11):
     add_rect(slide, 0, 0, SW, Inches(0.09), BLUE)
     add_text(slide, Inches(0.55), Inches(0.30), Inches(10.5), Inches(0.35),
               kicker.upper(), size=13, color=BLUE, bold=True)
@@ -296,10 +296,29 @@ add_text(s, Inches(0.55), Inches(6.3), Inches(12.2), Inches(0.6),
           size=13, color=INK_MUTED, italic=True)
 
 # =====================================================================
-# SLIDE 8 — Q3a Revenue Outlook
+# SLIDE 8 — Q2d Reserve (Headroom/Footroom) Scenario [extension, beyond base exercise]
 # =====================================================================
 s = add_slide(); set_bg(s)
-slide_header(s, 'Q3a  ·  Forward Outlook', 'How Will Each Revenue Stream Evolve Over the Next Decade?', 8)
+slide_header(s, 'Q2d  ·  Reserve Scenario (Extension)', 'Layering NYISO Reserve Revenue on Top of Energy Arbitrage', 8)
+
+half_w = Inches(6.05)
+add_picture_fit(s, IMG + 'q2_energy_only_by_config.png', Inches(0.4), Inches(1.5), half_w, Inches(3.55))
+add_picture_fit(s, IMG + 'q2_energy_plus_reserve_by_config.png', Inches(6.85), Inches(1.5), half_w, Inches(3.55))
+
+add_bullets(s, Inches(0.55), Inches(5.2), Inches(12.2), Inches(1.6), [
+    'Beyond the base exercise: estimates additional revenue from offering NYISO reserve capacity at $1.25/MW-hr (midpoint of the $1–1.5/MW range you flagged). Headroom = capacity to increase output on call; footroom = capacity to decrease output on call.',
+    'Solar offers footroom only (already at its irradiance-limited max) = that hour\'s delivered MW → +$0.69M (+3.6%). Storage reuses the Q2b/c daily schedule (footroom while charging, headroom while discharging, both simultaneously while idle) → +$0.91M (+36.9%). Combined sums the two → +$1.60M (+7.5%).',
+], size=12.5, space_after=8)
+
+add_text(s, Inches(0.55), Inches(6.95), Inches(12.2), Inches(0.5),
+          'Illustrative only: real NYISO reserve products carry response-time, minimum-run, and co-optimization rules stricter than modeled here — a more rigorous treatment is part of the Q3b follow-on scope.',
+          size=11.5, color=INK_MUTED, italic=True)
+
+# =====================================================================
+# SLIDE 9 — Q3a Revenue Outlook
+# =====================================================================
+s = add_slide(); set_bg(s)
+slide_header(s, 'Q3a  ·  Forward Outlook', 'How Will Each Revenue Stream Evolve Over the Next Decade?', 9)
 
 cols = [
     ('Standalone Solar', 'Capture price likely erodes', [
@@ -324,15 +343,15 @@ for i, (title, sub, bullets, color) in enumerate(cols):
     add_bullets(s, x, Inches(2.95), cw, Inches(3.8), bullets, size=13, space_after=14, line_spacing=1.15)
 
 # =====================================================================
-# SLIDE 9 — Q3b Follow-on Study
+# SLIDE 10 — Q3b Follow-on Study
 # =====================================================================
 s = add_slide(); set_bg(s)
-slide_header(s, 'Q3b  ·  Proposed Follow-On Study', 'A More Complete Revenue Forecast — 10 Additional Hours', 9)
+slide_header(s, 'Q3b  ·  Proposed Follow-On Study', 'A More Complete Revenue Forecast — 10 Additional Hours', 10)
 
 items = [
     ('1', 'Forward price shapes', '~3 hrs', 'Replace the 2023 backcast with a forward-looking hourly price shape reflecting expected capacity additions/retirements and load growth (electrification, data centers), grounded in published NYISO / NYSERDA CLCPA outlooks.'),
     ('2', 'Realistic operating assumptions', '~2 hrs', 'Round-trip efficiency ~85–90% (not 100%), solar degradation (~0.5%/yr), battery degradation/augmentation, multi-cycle-per-day dispatch where economic.'),
-    ('3', 'Capacity & ancillary revenue', '~2 hrs', "Add NYISO capacity market (ICAP) and frequency regulation revenue — often the majority of a merchant battery's revenue stack. Likely the single biggest gap in the Q2 analysis."),
+    ('3', 'Capacity & ancillary revenue', '~2 hrs', "Add NYISO capacity market (ICAP) and frequency regulation revenue — often the majority of a merchant battery's revenue stack. Q2d sketches an illustrative reserve add-on; a rigorous version (real product rules, co-optimization, capacity market) is still the single biggest gap."),
     ('4', 'Scenario / sensitivity analysis', '~2 hrs', 'High/low cases on load growth, gas prices, and renewable build-out pace, given how uncertain the 10-year price path is.'),
     ('5', 'Full pro forma', '~1 hr', 'Layer in provided capex, O&M, financing, and ITC/IRA tax credit treatment to compute NPV/IRR rather than simple payback.'),
 ]
@@ -354,10 +373,10 @@ for i, (num, title, hrs, desc) in enumerate(items):
         add_rect(s, Inches(0.55), ry + row_h - Inches(0.12), Inches(12.25), Pt(0.75), GRIDLINE)
 
 # =====================================================================
-# SLIDE 10 — Q3c Recommendation
+# SLIDE 11 — Q3c Recommendation
 # =====================================================================
 s = add_slide(); set_bg(s)
-slide_header(s, 'Q3c  ·  Recommendation', 'Combined Solar + Storage Is the Recommended Installation', 10)
+slide_header(s, 'Q3c  ·  Recommendation', 'Combined Solar + Storage Is the Recommended Installation', 11)
 
 add_picture_fit(s, IMG + 'q3_payback_comparison.png', Inches(0.4), Inches(1.5), Inches(7.7), Inches(3.5))
 
