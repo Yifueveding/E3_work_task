@@ -42,6 +42,16 @@ Dispatch simplification & One full charge/discharge cycle per day with perfect r
 \end{tabular}
 \end{table}
 
+\textbf{Caveat on price basis:} we chose real-time (RT) prices because they reflect the
+actual settlement value of energy at the moment it is physically delivered. The tradeoff
+is that the storage dispatch model (Q2b/Q2c) assumes perfect foresight of which hours to
+charge and discharge --- an assumption that is far more realistic under day-ahead (DA)
+prices, which are actually published and known before the operating day, than under RT
+prices, which are not knowable in advance. Under a real operating strategy, storage would
+have to forecast RT prices rather than observe them, so the RT-basis storage revenue
+figures below likely overstate what is achievable in practice; a DA-basis run would be a
+useful sensitivity check.
+
 \section*{Q2a. Standalone Solar Revenue}
 
 Hourly solar generation is calculated from the normalized production shape and

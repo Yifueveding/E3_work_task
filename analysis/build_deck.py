@@ -235,31 +235,49 @@ add_bullets(s, Inches(6.85), Inches(5.55), half_w, Inches(1.7), [
 s = add_slide(); set_bg(s)
 slide_header(s, 'Q2  ·  Methodology', 'Revenue Modeling Approach & Key Assumptions', 5)
 
-add_text(s, Inches(0.55), Inches(1.55), Inches(12.2), Inches(0.4),
-          'Price basis: Real-Time (RT) prices used throughout — reflects the actual settlement value of energy at the time it is physically delivered.',
-          size=14, color=INK_SECONDARY, italic=True)
+chips = [
+    ('300 MW-DC / 250 MW-AC', 'Solar Size / Inverter Limit'),
+    ('50 MW / 200 MWh (4-hr)', 'Storage Power / Energy'),
+    ('100%', 'Round-Trip Efficiency'),
+    ('Real-Time (RT)', 'Price Basis — see caveat below'),
+]
+chip_w = Inches((12.2 - 3 * 0.15) / 4)
+chip_h = Inches(0.72)
+chip_y = Inches(1.42)
+for i, (val, lab) in enumerate(chips):
+    cx = Inches(0.55) + i * (chip_w + Inches(0.15))
+    add_rect(s, cx, chip_y, chip_w, chip_h, SURFACE)
+    box = s.shapes[-1]; box.line.color.rgb = GRIDLINE; box.line.width = Pt(0.75)
+    add_text(s, cx + Inches(0.12), chip_y + Inches(0.09), chip_w - Inches(0.24), Inches(0.32),
+              val, size=13.5, color=BLUE, bold=True)
+    add_text(s, cx + Inches(0.12), chip_y + Inches(0.42), chip_w - Inches(0.24), Inches(0.28),
+              lab, size=9.5, color=INK_SECONDARY)
+
+add_text(s, Inches(0.55), Inches(2.24), Inches(12.2), Inches(0.24),
+          'Notation: p_t = hourly price ($/MWh); s_t = normalized solar shape; G_t = delivered solar MW.',
+          size=10, color=INK_MUTED, italic=True)
 
 rows = [
-    ('Standalone Solar', 'Delivered output = min(Solar Shape × 300 MW-DC, 250 MW-AC inverter limit). Revenue = Σ(delivered MW × RT price).', 0.62),
-    ('Standalone Storage', '4-hr duration (200 MWh ÷ 50 MW). 1 full cycle/day: charge the day\'s 4 lowest-price hours, discharge the 4 highest-price hours. Perfect real-time price foresight; round-trip efficiency = 100% (per given input); no degradation or cycling cost; energy arbitrage only in this base case (see Reserve Scenario row below).', 1.0),
-    ('Combined Solar + Storage', 'Solar identical to standalone. Storage charges first from otherwise-clipped/curtailed solar (zero cost), then tops up from the grid at the day\'s lowest remaining prices; discharge unchanged.', 0.78),
-    ('Reserve Scenario (Q2d)', 'Extension beyond the base exercise: reserve capacity valued at $1.25/MW-hr (midpoint of $1–1.5/MW). Headroom = up-reserve capacity; footroom = down-reserve capacity. Solar cannot provide reserve (variable, non-dispatchable) → $0. Storage offers footroom while charging, headroom while discharging, both simultaneously while idle → +$0.91M. Details on Slide 8.', 1.08),
+    ('Standalone Solar', 'Delivered output = min(Solar Shape × 300 MW-DC, 250 MW-AC inverter limit). Revenue = Σ(delivered MW × RT price).', 0.5),
+    ('Standalone Storage', '4-hr duration (200 MWh ÷ 50 MW). 1 full cycle/day: charge the day\'s 4 lowest-price hours, discharge the 4 highest-price hours. Perfect real-time price foresight; round-trip efficiency = 100% (per given input); no degradation or cycling cost; energy arbitrage only in this base case (see Reserve Scenario row below).', 0.85),
+    ('Combined Solar + Storage', 'Solar identical to standalone. Storage charges first from otherwise-clipped/curtailed solar (zero cost), then tops up from the grid at the day\'s lowest remaining prices; discharge unchanged.', 0.65),
+    ('Reserve Scenario (Q2d)', 'Extension beyond the base exercise: reserve capacity valued at $1.25/MW-hr (midpoint of $1–1.5/MW). Headroom = up-reserve capacity; footroom = down-reserve capacity. Solar cannot provide reserve (variable, non-dispatchable) → $0. Storage offers footroom while charging, headroom while discharging, both simultaneously while idle → +$0.91M. Details on Slide 8.', 0.9),
 ]
 
-ty = Inches(1.95)
+ty = Inches(2.56)
 col1_w, col2_w = Inches(2.9), Inches(9.35)
 add_rect(s, Inches(0.55), ty, col1_w + col2_w, Pt(2), GRIDLINE)
-ry = ty + Inches(0.15)
+ry = ty + Inches(0.12)
 for label, desc, h in rows:
     row_h = Inches(h)
-    add_text(s, Inches(0.55), ry, col1_w, Inches(0.4), label, size=14.5, color=BLUE, bold=True)
-    add_text(s, Inches(3.55), ry, col2_w, row_h, desc, size=12, color=INK_SECONDARY, line_spacing=1.1)
-    ry = ry + row_h + Inches(0.16)
-    add_rect(s, Inches(0.55), ry - Inches(0.1), col1_w + col2_w, Pt(1), GRIDLINE)
+    add_text(s, Inches(0.55), ry, col1_w, Inches(0.4), label, size=13.5, color=BLUE, bold=True)
+    add_text(s, Inches(3.55), ry, col2_w, row_h, desc, size=11, color=INK_SECONDARY, line_spacing=1.08)
+    ry = ry + row_h + Inches(0.12)
+    add_rect(s, Inches(0.55), ry - Inches(0.08), col1_w + col2_w, Pt(1), GRIDLINE)
 
-add_text(s, Inches(0.55), ry + Inches(0.08), Inches(12.2), Inches(0.5),
-          'All simplifications are intentional given the exercise\'s time-box (Q2b/2c each capped at ~1 hour); more rigorous operating assumptions are proposed in Q3b.',
-          size=12, color=INK_MUTED, italic=True)
+add_text(s, Inches(0.55), ry + Inches(0.06), Inches(12.2), Inches(0.6),
+          'All simplifications are intentional given the exercise\'s time-box (Q2b/2c each capped at ~1 hour); more rigorous operating assumptions are proposed in Q3b. Caveat: RT-basis storage dispatch assumes perfect real-time foresight — a stronger assumption than DA foresight, since DA prices are published in advance and RT prices are not; a DA-basis run would be a useful sensitivity check.',
+          size=11, color=INK_MUTED, italic=True)
 
 # =====================================================================
 # SLIDE 6 — Q2 Results
