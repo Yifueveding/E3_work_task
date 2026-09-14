@@ -305,14 +305,14 @@ half_w = Inches(6.05)
 add_picture_fit(s, IMG + 'q2_energy_only_by_config.png', Inches(0.4), Inches(1.5), half_w, Inches(3.55))
 add_picture_fit(s, IMG + 'q2_energy_plus_reserve_by_config.png', Inches(6.85), Inches(1.5), half_w, Inches(3.55))
 
-add_bullets(s, Inches(0.55), Inches(5.2), Inches(12.2), Inches(1.6), [
+add_bullets(s, Inches(0.55), Inches(5.15), Inches(12.2), Inches(1.5), [
     'Beyond the base exercise: estimates additional revenue from offering NYISO reserve capacity at $1.25/MW-hr (midpoint of the $1–1.5/MW range you flagged). Headroom = capacity to increase output on call; footroom = capacity to decrease output on call.',
     'Solar offers footroom only (already at its irradiance-limited max) = that hour\'s delivered MW → +$0.69M (+3.6%). Storage reuses the Q2b/c daily schedule (footroom while charging, headroom while discharging, both simultaneously while idle) → +$0.91M (+36.9%). Combined sums the two → +$1.60M (+7.5%).',
-], size=12.5, space_after=8)
+], size=12.5, space_after=6)
 
-add_text(s, Inches(0.55), Inches(6.95), Inches(12.2), Inches(0.5),
-          'Illustrative only: real NYISO reserve products carry response-time, minimum-run, and co-optimization rules stricter than modeled here — a more rigorous treatment is part of the Q3b follow-on scope.',
-          size=11.5, color=INK_MUTED, italic=True)
+add_text(s, Inches(0.55), Inches(6.85), Inches(12.2), Inches(0.35),
+          'Illustrative only — real reserve products carry stricter rules than modeled here; see Q3b for a rigorous treatment.',
+          size=12, color=INK_MUTED, italic=True)
 
 # =====================================================================
 # SLIDE 9 — Q3a Revenue Outlook
