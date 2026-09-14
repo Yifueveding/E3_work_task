@@ -8,9 +8,9 @@ Headroom = capacity available to INCREASE output on call (up-reserve).
 Footroom = capacity available to DECREASE output on call (down-reserve).
 
 Assumptions (nameplate-based, state-dependent — see chat for alternatives considered):
-  Solar   - can only offer footroom (already running at its irradiance-limited max, so it
-            has no headroom to ramp up). Footroom each hour = that hour's delivered MW,
-            since it could curtail down to zero on instruction.
+  Solar   - cannot provide reserve. It is a variable, weather-dependent resource with no
+            firm/dispatchable capacity commitment, so it does not qualify to offer NYISO
+            reserve products; standalone solar earns $0 reserve revenue.
   Storage - reuses the same daily charge/discharge schedule as q2_revenue.py (4 lowest-
             price hours charge, 4 highest-price hours discharge, 16 hours idle), determined
             from real-time prices. While charging, it is already using its full 50 MW to
@@ -19,9 +19,9 @@ Assumptions (nameplate-based, state-dependent — see chat for alternatives cons
             idle, it can offer the full 50 MW of headroom AND the full 50 MW of footroom
             simultaneously (it could ramp to +50 MW discharge or -50 MW charge from a
             standing start).
-  Combined - solar footroom (identical to standalone solar) + storage headroom/footroom
-            (identical schedule to standalone storage, since the combined case's dispatch
-            *timing* is unchanged from Q2b/Q2c — only the charging cost source differs).
+  Combined - all reserve capacity comes from the storage component only (identical
+            schedule to standalone storage); the solar component still cannot offer
+            reserve.
 
 Energy-only revenue figures below are taken directly from q2_revenue.py's real-time-price
 output (not recomputed here) so this script only needs to add the incremental reserve
@@ -42,8 +42,6 @@ with open('hourly_data.csv') as f:
             'price': float(row['NYISO (NYC Zone) Real Time Energy Price ($/MWh)']),
         })
 
-SOLAR_MW = 300
-INV_MW = 250
 STOR_MW = 50
 STOR_MWH = 200
 DURATION_HR = STOR_MWH / STOR_MW  # 4 hours
@@ -59,12 +57,6 @@ ENERGY_REVENUE = {
 by_day = defaultdict(list)
 for row in rows:
     by_day[row['ts'].date()].append(row)
-
-# ---------- Solar footroom ----------
-solar_footroom_mwh = 0.0
-for row in rows:
-    delivered = min(row['shape'] * SOLAR_MW, INV_MW)
-    solar_footroom_mwh += delivered
 
 # ---------- Storage headroom / footroom (schedule from real-time-price dispatch) ----------
 storage_headroom_mwh = 0.0
@@ -91,22 +83,21 @@ for day, day_rows in by_day.items():
     n_idle_hrs_total += len(idle_rows)
 
 storage_reserve_mwh = storage_headroom_mwh + storage_footroom_mwh
-combined_reserve_mwh = solar_footroom_mwh + storage_reserve_mwh
-
-solar_reserve_revenue = solar_footroom_mwh * RESERVE_PRICE
 storage_reserve_revenue = storage_reserve_mwh * RESERVE_PRICE
-combined_reserve_revenue = combined_reserve_mwh * RESERVE_PRICE
+
+# Solar cannot provide reserve; combined system's reserve comes from storage only.
+solar_reserve_revenue = 0.0
+combined_reserve_revenue = storage_reserve_revenue
 
 print(f'Reserve price assumed: ${RESERVE_PRICE:.2f}/MW-hr')
 print(f'Storage hours: {n_charge_hrs_total} charge, {n_discharge_hrs_total} discharge, {n_idle_hrs_total} idle')
 print()
 
 print('=== Standalone Solar ===')
-print(f'Footroom offered: {solar_footroom_mwh:,.0f} MW-hr/yr')
+print('Solar cannot provide reserve (variable, non-dispatchable resource).')
 print(f'Reserve revenue: ${solar_reserve_revenue:,.0f}')
 print(f'Energy-only revenue: ${ENERGY_REVENUE["solar"]:,.0f}')
 print(f'Energy + reserve revenue: ${ENERGY_REVENUE["solar"] + solar_reserve_revenue:,.0f}')
-print(f'Reserve uplift: {100*solar_reserve_revenue/ENERGY_REVENUE["solar"]:.2f}%')
 print()
 
 print('=== Standalone Storage ===')
@@ -119,6 +110,7 @@ print(f'Reserve uplift: {100*storage_reserve_revenue/ENERGY_REVENUE["storage"]:.
 print()
 
 print('=== Combined Solar + Storage ===')
+print('Reserve revenue comes entirely from the storage component (solar cannot provide reserve).')
 print(f'Reserve revenue: ${combined_reserve_revenue:,.0f}')
 print(f'Energy-only revenue: ${ENERGY_REVENUE["combined"]:,.0f}')
 print(f'Energy + reserve revenue: ${ENERGY_REVENUE["combined"] + combined_reserve_revenue:,.0f}')

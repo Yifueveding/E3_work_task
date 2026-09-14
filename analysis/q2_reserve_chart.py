@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 
 # Values from q2_reserve_scenario.py output ($1.25/MW-hr reserve price)
 energy_rev = {'solar': 18_910_425, 'storage': 2_473_753, 'combined': 21_391_036}
-reserve_rev = {'solar': 689_318, 'storage': 912_500, 'combined': 1_601_818}
+reserve_rev = {'solar': 0, 'storage': 912_500, 'combined': 912_500}
 
 BLUE, GREEN = '#2a78d6', '#2fa84f'
 INK_PRIMARY, INK_SECONDARY, INK_MUTED = '#0b0b0b', '#52514e', '#898781'
