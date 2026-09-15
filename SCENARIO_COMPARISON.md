@@ -8,8 +8,10 @@ Storage compare on annual revenue, per-unit energy value, and payback?
 **Assumption used here:** all three scenarios share the same 2023 NYISO N.Y.C. day-ahead
 price data, the same $405M / $75M / $445M capex figures (solar / storage / combined —
 package pricing on the combined system, not a simple sum of standalone capex), and the
-same per-day LP dispatch formulation (`OPTIMIZATION_MODEL.md`). Only the structural
-constraint or revenue stream being tested changes across scenarios.
+same per-day LP dispatch formulation (see `analysis/q2_revenue.py`,
+`analysis/q2_reserve_scenario.py`, and `interconnection_scenario/interconnection_analysis.py`
+for the three variants). Only the structural constraint or revenue stream being tested
+changes across scenarios.
 
 ## Methodology
 
