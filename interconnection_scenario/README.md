@@ -107,3 +107,7 @@ resource (the storage's power rating and the shared export capacity).
 - `q2_energy_only_chart_interconnection.py` — same style as `analysis/q2_energy_only_by_config.png`,
   using the 150 MW POI scenario's numbers
 - `q2_energy_only_by_config_interconnection.png` — output chart
+- `q2_energy_plus_reserve_chart_interconnection.py` — same style as
+  `analysis/q2_energy_plus_reserve_by_config.png`, stacking reserve on top of energy revenue
+  under the 150 MW POI scenario; shares the same y-axis scale as the energy-only chart above
+- `q2_energy_plus_reserve_by_config_interconnection.png` — output chart

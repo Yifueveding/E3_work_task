@@ -46,8 +46,8 @@ ax.bar(x, reserve_vals, width=0.55, bottom=energy_vals, color=GREEN, zorder=3,
 for xi, e, r, t in zip(x, energy_vals, reserve_vals, totals):
     ax.text(xi, t + 0.4, f'${t:.1f}M', ha='center', va='bottom', fontsize=11, color=INK_PRIMARY, fontweight='bold')
     ax.text(xi, e / 2, f'${e:.1f}M', ha='center', va='center', fontsize=9, color='white', fontweight='bold')
-    if r > 0.5:
-        ax.text(xi, e + r / 2, f'+${r:.1f}M', ha='center', va='center', fontsize=9, color='white', fontweight='bold')
+    if r > 0.1:
+        ax.text(xi, e + r / 2, f'+${r:.2f}M', ha='center', va='center', fontsize=8.5, color='white', fontweight='bold')
 
 ax.set_xticks(x); ax.set_xticklabels(labels, color=INK_SECONDARY, fontsize=10.5)
 ax.set_ylabel('2023 Backcast Revenue ($M)', color=INK_SECONDARY, fontsize=10)
