@@ -1,4 +1,4 @@
-"""Build the GCV Solar + Storage Valuation slide deck (11 slides)."""
+"""Build the GCV Solar + Storage Valuation slide deck (12 slides)."""
 from pptx import Presentation
 from pptx.util import Inches, Pt, Emu
 from pptx.dml.color import RGBColor
@@ -105,7 +105,7 @@ def add_bullets(slide, x, y, w, h, items, size=15, color=INK_SECONDARY, font=FON
     return tb
 
 
-def slide_header(slide, kicker, title, n, total=11):
+def slide_header(slide, kicker, title, n, total=12):
     add_rect(slide, 0, 0, SW, Inches(0.09), BLUE)
     add_text(slide, Inches(0.55), Inches(0.30), Inches(10.5), Inches(0.35),
               kicker.upper(), size=13, color=BLUE, bold=True)
@@ -209,10 +209,24 @@ add_bullets(s, Inches(8.35), Inches(1.7), Inches(4.5), Inches(4.9), [
 ], size=14.5)
 
 # =====================================================================
-# SLIDE 4 — Q1b/Q1c Solar vs Storage seasonal value
+# SLIDE 4 — Q1a Day-Ahead vs Real-Time Price Comparison
 # =====================================================================
 s = add_slide(); set_bg(s)
-slide_header(s, 'Q1b & Q1c  ·  Seasonal Value', 'Solar and Storage Peak in Different — and Overlapping — Months', 4)
+slide_header(s, 'Q1a  ·  Historical Prices', 'Day-Ahead vs. Real-Time Price Comparison', 4)
+add_picture_fit(s, IMG + 'monthly_da_rt_price_2023.png', Inches(0.4), Inches(1.55), Inches(7.7), Inches(5.3))
+add_bullets(s, Inches(8.35), Inches(1.7), Inches(4.5), Inches(4.9), [
+    'Annual average: DA $33.94/MWh vs. RT $33.47/MWh — the two track closely across the year.',
+    'RT runs below DA in most months, consistent with DA carrying a modest forward-risk premium.',
+    'Sep is the exception: RT ($37.54) jumps well above DA ($30.50), reflecting real-time volatility/spikes not priced into the day-ahead market.',
+    'Winter (Feb) and summer (Jul) peaks hold in both series, just slightly damped in real-time.',
+    'This DA/RT gap is the justification for using DA prices in the Q2 dispatch model (Slide 6) — see the methodology note there.',
+], size=14)
+
+# =====================================================================
+# SLIDE 5 — Q1b/Q1c Solar vs Storage seasonal value
+# =====================================================================
+s = add_slide(); set_bg(s)
+slide_header(s, 'Q1b & Q1c  ·  Seasonal Value', 'Solar and Storage Peak in Different — and Overlapping — Months', 5)
 half_w = Inches(6.05)
 add_picture_fit(s, IMG + 'solar_value_by_month.png', Inches(0.4), Inches(1.5), half_w, Inches(3.55))
 add_picture_fit(s, IMG + 'storage_value_by_month.png', Inches(6.85), Inches(1.5), half_w, Inches(3.55))
@@ -230,10 +244,10 @@ add_bullets(s, Inches(6.85), Inches(5.55), half_w, Inches(1.7), [
 ], size=12.5)
 
 # =====================================================================
-# SLIDE 5 — Q2 Methodology & Assumptions
+# SLIDE 6 — Q2 Methodology & Assumptions
 # =====================================================================
 s = add_slide(); set_bg(s)
-slide_header(s, 'Q2  ·  Methodology', 'Revenue Modeling Approach & Key Assumptions', 5)
+slide_header(s, 'Q2  ·  Methodology', 'Revenue Modeling Approach & Key Assumptions', 6)
 
 chips = [
     ('300 MW-DC / 250 MW-AC', 'Solar Size / Inverter Limit'),
@@ -280,10 +294,10 @@ add_text(s, Inches(0.55), ry + Inches(0.06), Inches(12.2), Inches(0.6),
           size=11, color=INK_MUTED, italic=True)
 
 # =====================================================================
-# SLIDE 6 — Q2 Results
+# SLIDE 7 — Q2 Results
 # =====================================================================
 s = add_slide(); set_bg(s)
-slide_header(s, 'Q2  ·  Results', '2023 Backcast Revenue by Configuration', 6)
+slide_header(s, 'Q2  ·  Results', '2023 Backcast Revenue by Configuration', 7)
 add_picture_fit(s, IMG + 'q2_revenue_by_config.png', Inches(0.4), Inches(1.5), Inches(7.9), Inches(5.4))
 add_bullets(s, Inches(8.5), Inches(1.7), Inches(4.35), Inches(4.9), [
     'Standalone Solar: $18.80M (551,454 MWh delivered; avg. capture price $34.10/MWh).',
@@ -293,10 +307,10 @@ add_bullets(s, Inches(8.5), Inches(1.7), Inches(4.35), Inches(4.9), [
 ], size=14)
 
 # =====================================================================
-# SLIDE 7 — Q2c Interaction Detail
+# SLIDE 8 — Q2c Interaction Detail
 # =====================================================================
 s = add_slide(); set_bg(s)
-slide_header(s, 'Q2c  ·  Solar + Storage Interaction', 'The Pairing Benefit Is Real but Small Today', 7)
+slide_header(s, 'Q2c  ·  Solar + Storage Interaction', 'The Pairing Benefit Is Real but Small Today', 8)
 
 add_bullets(s, Inches(0.55), Inches(1.7), Inches(6.1), Inches(4.5), [
     'In the combined system, storage can charge from solar output that would otherwise be clipped by the 250 MW inverter limit — at zero marginal cost.',
@@ -316,10 +330,10 @@ add_text(s, Inches(0.55), Inches(6.3), Inches(12.2), Inches(0.6),
           size=13, color=INK_MUTED, italic=True)
 
 # =====================================================================
-# SLIDE 8 — Q2d Reserve (Headroom/Footroom) Scenario [extension, beyond base exercise]
+# SLIDE 9 — Q2d Reserve (Headroom/Footroom) Scenario [extension, beyond base exercise]
 # =====================================================================
 s = add_slide(); set_bg(s)
-slide_header(s, 'Q2d  ·  Reserve Scenario (Extension)', 'Layering NYISO Reserve Revenue on Top of Energy Arbitrage', 8)
+slide_header(s, 'Q2d  ·  Reserve Scenario (Extension)', 'Layering NYISO Reserve Revenue on Top of Energy Arbitrage', 9)
 
 half_w = Inches(6.05)
 add_picture_fit(s, IMG + 'q2_energy_only_by_config.png', Inches(0.4), Inches(1.5), half_w, Inches(3.55))
@@ -335,10 +349,10 @@ add_text(s, Inches(0.55), Inches(6.72), Inches(12.2), Inches(0.3),
           size=12, color=INK_MUTED, italic=True)
 
 # =====================================================================
-# SLIDE 9 — Q3a Revenue Outlook
+# SLIDE 10 — Q3a Revenue Outlook
 # =====================================================================
 s = add_slide(); set_bg(s)
-slide_header(s, 'Q3a  ·  Forward Outlook', 'How Will Each Revenue Stream Evolve Over the Next Decade?', 9)
+slide_header(s, 'Q3a  ·  Forward Outlook', 'How Will Each Revenue Stream Evolve Over the Next Decade?', 10)
 
 cols = [
     ('Standalone Solar', 'Capture price likely erodes', [
@@ -363,10 +377,10 @@ for i, (title, sub, bullets, color) in enumerate(cols):
     add_bullets(s, x, Inches(2.95), cw, Inches(3.8), bullets, size=13, space_after=14, line_spacing=1.15)
 
 # =====================================================================
-# SLIDE 10 — Q3b Follow-on Study
+# SLIDE 11 — Q3b Follow-on Study
 # =====================================================================
 s = add_slide(); set_bg(s)
-slide_header(s, 'Q3b  ·  Proposed Follow-On Study', 'A More Complete Revenue Forecast — 10 Additional Hours', 10)
+slide_header(s, 'Q3b  ·  Proposed Follow-On Study', 'A More Complete Revenue Forecast — 10 Additional Hours', 11)
 
 items = [
     ('1', 'Forward price shapes', '~3 hrs', 'Replace the 2023 backcast with a forward-looking hourly price shape reflecting expected capacity additions/retirements and load growth (electrification, data centers), grounded in published NYISO / NYSERDA CLCPA outlooks.'),
@@ -393,10 +407,10 @@ for i, (num, title, hrs, desc) in enumerate(items):
         add_rect(s, Inches(0.55), ry + row_h - Inches(0.12), Inches(12.25), Pt(0.75), GRIDLINE)
 
 # =====================================================================
-# SLIDE 11 — Interconnection Limit Sensitivity (Extension)
+# SLIDE 12 — Interconnection Limit Sensitivity (Extension)
 # =====================================================================
 s = add_slide(); set_bg(s)
-slide_header(s, 'Interconnection Sensitivity (Extension)', 'A 150 MW POI Limit Cuts Solar Revenue, but Storage Cushions the Blow', 11)
+slide_header(s, 'Interconnection Sensitivity (Extension)', 'A 150 MW POI Limit Cuts Solar Revenue, but Storage Cushions the Blow', 12)
 
 add_picture_fit(s, 'q2_energy_only_combined.png', Inches(0.4), Inches(1.45), Inches(12.5), Inches(4.05))
 
