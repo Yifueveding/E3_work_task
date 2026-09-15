@@ -20,7 +20,7 @@ avgs = [sums[m]/counts[m] for m in range(1, 13)]
 annual_avg = sum(sums.values()) / sum(counts.values())
 
 # Write CSV
-with open('analysis/monthly_da_price_2023.csv', 'w', newline='') as f:
+with open('no_interconnection_limit/monthly_da_price_2023.csv', 'w', newline='') as f:
     w = csv.writer(f)
     w.writerow(['Month', 'Avg NYISO NYC Day-Ahead Price ($/MWh)'])
     for m, a in zip(months, avgs):
@@ -66,8 +66,8 @@ ax.tick_params(axis='x', colors=INK_SECONDARY, length=0, labelsize=10)
 ax.tick_params(axis='y', colors=INK_PRIMARY, length=0, labelsize=13)
 
 plt.tight_layout()
-plt.savefig('analysis/monthly_da_price_2023.png', facecolor=SURFACE)
-print('Wrote analysis/monthly_da_price_2023.csv and analysis/monthly_da_price_2023.png')
+plt.savefig('no_interconnection_limit/monthly_da_price_2023.png', facecolor=SURFACE)
+print('Wrote no_interconnection_limit/monthly_da_price_2023.csv and no_interconnection_limit/monthly_da_price_2023.png')
 for m, a in zip(months, avgs):
     print(f'{m}: ${a:.2f}/MWh')
 print(f'Annual: ${annual_avg:.2f}/MWh')

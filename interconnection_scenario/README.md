@@ -1,6 +1,6 @@
 # Interconnection-Limit Scenario (Exploratory, Beyond the Base Exercise)
 
-**Question:** the base Q2 analysis (`../analysis/`) finds a negligible interaction benefit
+**Question:** the base Q2 analysis (`../no_interconnection_limit/`) finds a negligible interaction benefit
 (+0.05%) from pairing solar and storage, because the only constraint on solar export is the
 300 MW-DC / 250 MW-AC inverter ratio, which clips almost nothing (372 MWh/year — 0.07% of
 gross generation). What if there's also a binding **point-of-interconnection (POI) export
@@ -56,7 +56,7 @@ solar-vs-storage export tradeoff endogenously in favor of the higher-value optio
 ## Reserve (Headroom/Footroom) Scenario Under the POI Limit
 
 The main analysis also layers an illustrative NYISO reserve scenario on top of energy
-revenue (`../analysis/q2_reserve_scenario.py`, at $1.25/MW-hr). Extending that here reveals
+revenue (`../no_interconnection_limit/q2_reserve_scenario.py`, at $1.25/MW-hr). Extending that here reveals
 a genuine tension: **the same POI constraint that makes the energy interaction benefit much
 larger also makes storage's reserve contribution smaller.**
 
@@ -90,7 +90,7 @@ resource (the storage's power rating and the shared export capacity).
   150 MW round number.
 - Same zero-degradation/zero-cycling-cost and perfect-price-foresight simplifications as the
   main analysis apply here too — see the main analysis's caveats for detail.
-- This scenario is intentionally kept separate from `../analysis/` and the main deck, since
+- This scenario is intentionally kept separate from `../no_interconnection_limit/` and the main deck, since
   it changes a structural assumption (interconnection capacity) rather than extending the
   base exercise's methodology.
 
@@ -104,10 +104,10 @@ resource (the storage's power rating and the shared export capacity).
 - `interconnection_reserve_tradeoff.png` — output chart
 - `interconnection_chart.py` — generates the energy interaction-benefit comparison chart
 - `interconnection_interaction_benefit.png` — output chart
-- `q2_energy_only_chart_interconnection.py` — same style as `analysis/q2_energy_only_by_config.png`,
+- `q2_energy_only_chart_interconnection.py` — same style as `no_interconnection_limit/q2_energy_only_by_config.png`,
   using the 150 MW POI scenario's numbers
 - `q2_energy_only_by_config_interconnection.png` — output chart
 - `q2_energy_plus_reserve_chart_interconnection.py` — same style as
-  `analysis/q2_energy_plus_reserve_by_config.png`, stacking reserve on top of energy revenue
+  `no_interconnection_limit/q2_energy_plus_reserve_by_config.png`, stacking reserve on top of energy revenue
   under the 150 MW POI scenario; shares the same y-axis scale as the energy-only chart above
 - `q2_energy_plus_reserve_by_config_interconnection.png` — output chart

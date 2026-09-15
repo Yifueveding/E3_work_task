@@ -8,23 +8,23 @@ Storage compare on annual revenue, per-unit energy value, and payback?
 **Assumption used here:** all three scenarios share the same 2023 NYISO N.Y.C. day-ahead
 price data, the same $405M / $75M / $445M capex figures (solar / storage / combined —
 package pricing on the combined system, not a simple sum of standalone capex), and the
-same per-day LP dispatch formulation (see `analysis/q2_revenue.py`,
-`analysis/q2_reserve_scenario.py`, and `interconnection_scenario/interconnection_analysis.py`
+same per-day LP dispatch formulation (see `no_interconnection_limit/q2_revenue.py`,
+`no_interconnection_limit/q2_reserve_scenario.py`, and `interconnection_scenario/interconnection_analysis.py`
 for the three variants). Only the structural constraint or revenue stream being tested
 changes across scenarios.
 
 ## Methodology
 
-- **Energy-only** (`analysis/`) — today's base case: solar capped by the 300 MW-DC / 250
+- **Energy-only** (`no_interconnection_limit/`) — today's base case: solar capped by the 300 MW-DC / 250
   MW-AC inverter ratio (negligible clipping, 0.07%/yr); storage dispatched by a per-day LP
   multi-cycle energy-arbitrage optimum; combined system lets storage charge for free from
-  otherwise-clipped solar. See `analysis/q2.tex`.
+  otherwise-clipped solar. See `no_interconnection_limit/q2.tex`.
 - **Interconnection-limit** (`interconnection_scenario/`) — same dispatch logic, but with
   a binding 150 MW point-of-interconnection export cap (tighter than the 250 MW inverter),
   so solar export competes with storage discharge for the shared POI, and storage has a
   much larger pool of otherwise-curtailed solar to absorb for free. See
   `interconnection_scenario/README.md`.
-- **Energy + Reserve** (`analysis/q2_reserve_scenario.py`) — layers an illustrative NYISO
+- **Energy + Reserve** (`no_interconnection_limit/q2_reserve_scenario.py`) — layers an illustrative NYISO
   operating reserve (headroom/footroom) revenue stream on top of the energy-only dispatch,
   at $1.25/MW-hr (midpoint of the $1–1.5/MW range). Solar cannot offer reserve (variable,
   non-dispatchable); storage's headroom/footroom is classified hour-by-hour from its actual
@@ -33,7 +33,7 @@ changes across scenarios.
   scenario (solar delivered energy; storage discharge; combined = solar + storage
   discharge). Under Energy + Reserve, total (energy + reserve) revenue is divided by the
   same *energy* MWh, since reserve is a capacity product, not delivered energy.
-- **Pay-back Period** is the discounted-NPV crossing year (matches `analysis/npv_chart.py`):
+- **Pay-back Period** is the discounted-NPV crossing year (matches `no_interconnection_limit/npv_chart.py`):
   year cumulative NPV first turns non-negative, with NPV(t) = −Capex + Σ Revenue/(1.02)^i —
   i.e. a 2% discount rate, flat nominal revenue, no O&M/tax/financing/escalation. (Storage's
   energy-only crossing year, 72, is found by extending `npv_chart.py`'s 40-year plotting
@@ -66,7 +66,7 @@ changes across scenarios.
 | Per-unit Energy Value ($/MWh) | 34.10 | 22.00 | 31.85 |
 | Pay-back Period (years) | 29 | 40 | 27 |
 
-See `analysis/configuration_summary.csv` for the same figures in tidy (long) format.
+See `no_interconnection_limit/configuration_summary.csv` for the same figures in tidy (long) format.
 
 ## Why the scenarios move the way they do
 
@@ -90,20 +90,20 @@ squeezed).
   (export capacity) rather than adding a revenue stream — the two axes have not been
   combined (e.g. no "Interconnection-limit + Reserve" scenario here).
 - Same zero-degradation, zero-cycling-cost, and perfect day-ahead-price-foresight
-  simplifications apply across all three scenarios — see `analysis/q2.tex` and
+  simplifications apply across all three scenarios — see `no_interconnection_limit/q2.tex` and
   `interconnection_scenario/README.md` for detail.
 - Illustrative reserve and POI figures ($1.25/MW-hr, 150 MW) are stated assumptions, not
   given exercise inputs.
-- Discounted payback assumes a 2% discount rate (see `analysis/npv_chart.py` for the
+- Discounted payback assumes a 2% discount rate (see `no_interconnection_limit/npv_chart.py` for the
   breakeven-rate sensitivity — at a more typical 4–7% utility WACC, standalone storage
   never reaches positive NPV within any reasonable horizon).
 
 ## Files
 
-- `analysis/q2.tex`, `analysis/q2_revenue.py` — Energy-only base case
-- `analysis/q2_reserve_scenario.py` — Energy + Reserve
+- `no_interconnection_limit/q2.tex`, `no_interconnection_limit/q2_revenue.py` — Energy-only base case
+- `no_interconnection_limit/q2_reserve_scenario.py` — Energy + Reserve
 - `interconnection_scenario/interconnection_analysis.py`,
   `interconnection_scenario/README.md` — Interconnection-limit
-- `analysis/npv_chart.py`, `analysis/npv_by_config.png` — discounted payback / NPV crossing
+- `no_interconnection_limit/npv_chart.py`, `no_interconnection_limit/npv_by_config.png` — discounted payback / NPV crossing
   years underlying the Pay-back Period rows above
-- `analysis/configuration_summary.csv` — all figures above in tidy (long) CSV format
+- `no_interconnection_limit/configuration_summary.csv` — all figures above in tidy (long) CSV format

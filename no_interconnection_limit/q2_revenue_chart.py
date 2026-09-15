@@ -49,5 +49,5 @@ ax.text(2, combined_total/1e6 + 1.6,
         ha='center', va='bottom', fontsize=8.3, color=INK_MUTED)
 
 plt.tight_layout()
-plt.savefig('analysis/q2_revenue_by_config.png', facecolor=SURFACE)
+plt.savefig('no_interconnection_limit/q2_revenue_by_config.png', facecolor=SURFACE)
 print('saved q2_revenue_by_config.png')

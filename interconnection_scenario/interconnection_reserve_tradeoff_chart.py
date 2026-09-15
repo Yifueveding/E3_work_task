@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 # Energy interaction benefit, % (interconnection_analysis.py)
 energy_benefit_pct = {'No POI Limit': 0.0482, '150 MW POI Limit': 7.71}
 
-# Combined reserve revenue, $ (interconnection_reserve_scenario.py / analysis/q2_reserve_scenario.py)
+# Combined reserve revenue, $ (interconnection_reserve_scenario.py / no_interconnection_limit/q2_reserve_scenario.py)
 reserve_revenue = {'No POI Limit': 781_875, '150 MW POI Limit': 494_824}
 
 BLUE, ORANGE, GREEN, RED = '#2a78d6', '#eb6834', '#2fa84f', '#c0392b'

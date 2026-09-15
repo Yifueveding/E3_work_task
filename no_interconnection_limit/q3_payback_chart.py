@@ -33,5 +33,5 @@ ax.tick_params(axis='x', colors=INK_PRIMARY, length=0, labelsize=13)
 ax.tick_params(axis='y', length=0)
 
 plt.tight_layout()
-plt.savefig('analysis/q3_payback_comparison.png', facecolor=SURFACE)
+plt.savefig('no_interconnection_limit/q3_payback_comparison.png', facecolor=SURFACE)
 print('saved q3_payback_comparison.png')

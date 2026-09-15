@@ -57,7 +57,7 @@ ax.text(x[2], combined_solar_m + combined_storage_m / 2, f'${combined_storage_m:
 style_axes(ax, 'Energy-Only Revenue by Configuration (Day-Ahead Price Basis)')
 ax.legend(loc='upper left', frameon=False, fontsize=9.5, labelcolor=INK_SECONDARY, bbox_to_anchor=(0.0, 1.06))
 plt.tight_layout()
-plt.savefig('analysis/q2_energy_only_by_config.png', facecolor=SURFACE)
+plt.savefig('no_interconnection_limit/q2_energy_only_by_config.png', facecolor=SURFACE)
 print('saved q2_energy_only_by_config.png')
 plt.close(fig)
 
@@ -78,6 +78,6 @@ for xi, e, r, t in zip(x, energy_vals, reserve_vals, totals):
 style_axes(ax, 'Energy + Reserve Revenue by Configuration')
 ax.legend(loc='upper left', frameon=False, fontsize=9, labelcolor=INK_SECONDARY, bbox_to_anchor=(0.0, 1.05))
 plt.tight_layout()
-plt.savefig('analysis/q2_energy_plus_reserve_by_config.png', facecolor=SURFACE)
+plt.savefig('no_interconnection_limit/q2_energy_plus_reserve_by_config.png', facecolor=SURFACE)
 print('saved q2_energy_plus_reserve_by_config.png')
 plt.close(fig)

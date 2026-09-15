@@ -50,5 +50,5 @@ ax.tick_params(axis='x', colors=INK_SECONDARY, length=0, labelsize=10)
 ax.tick_params(axis='y', colors=INK_PRIMARY, length=0, labelsize=13)
 
 plt.tight_layout()
-plt.savefig('analysis/storage_value_by_month.png', facecolor=SURFACE)
+plt.savefig('no_interconnection_limit/storage_value_by_month.png', facecolor=SURFACE)
 print('saved storage_value_by_month.png')

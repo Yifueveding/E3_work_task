@@ -53,7 +53,7 @@ ax1.set_title('Solar Value by Month: Capture Price vs. Flat Average (2023, NYISO
 ax1.legend(loc='upper left', frameon=False, fontsize=9.5, labelcolor=INK_SECONDARY)
 
 plt.tight_layout()
-plt.savefig('analysis/solar_value_by_month.png', facecolor=SURFACE)
+plt.savefig('no_interconnection_limit/solar_value_by_month.png', facecolor=SURFACE)
 print('saved solar_value_by_month.png')
 for i,m in enumerate(months):
     print(f'{m}: capture={capture[i]:.2f} flat={flat[i]:.2f} genshare={gen_share[i]:.1f}%')

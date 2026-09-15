@@ -1,6 +1,6 @@
 """
 Requires scipy (for the per-day LP dispatch optimization in Q2b/Q2c). Run with an
-interpreter that has scipy installed, e.g. a venv: `<venv>/bin/python3 analysis/q2_revenue.py`.
+interpreter that has scipy installed, e.g. a venv: `<venv>/bin/python3 no_interconnection_limit/q2_revenue.py`.
 """
 import csv
 import numpy as np

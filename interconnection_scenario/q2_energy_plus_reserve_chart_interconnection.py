@@ -1,6 +1,6 @@
 """
 Companion to q2_energy_only_chart_interconnection.py, mirroring the style of
-analysis/q2_reserve_chart.py's "Energy + Reserve" panel: stacks reserve revenue
+no_interconnection_limit/q2_reserve_chart.py's "Energy + Reserve" panel: stacks reserve revenue
 (headroom + footroom @ $1.25/MW-hr) on top of energy revenue, by configuration, under the
 150 MW interconnection-limit scenario. Shares the same y-axis scale as
 q2_energy_only_by_config_interconnection.png so the two are directly comparable.

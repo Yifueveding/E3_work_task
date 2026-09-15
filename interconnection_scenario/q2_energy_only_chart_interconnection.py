@@ -1,5 +1,5 @@
 """
-Same chart type/style as analysis/q2_energy_only_by_config.png (solar vs. storage revenue
+Same chart type/style as no_interconnection_limit/q2_energy_only_by_config.png (solar vs. storage revenue
 components, by configuration), but using the 150 MW interconnection-limit scenario's
 numbers instead of the base case (no POI limit) numbers. Values from
 interconnection_analysis.py output. Saved separately so the two are easy to compare
@@ -7,7 +7,7 @@ side by side; the base-case file is untouched.
 """
 import matplotlib.pyplot as plt
 
-# Base case (analysis/q2_revenue.py, no POI limit) for shared y-axis scaling only
+# Base case (no_interconnection_limit/q2_revenue.py, no POI limit) for shared y-axis scaling only
 BASE_MAX_TOTAL = 20_791_797 / 1e6
 
 # 150 MW interconnection-limit scenario (interconnection_analysis.py output)

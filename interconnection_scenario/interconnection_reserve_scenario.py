@@ -1,6 +1,6 @@
 """
 Reserve (headroom/footroom) scenario under the 150 MW interconnection limit, extending
-interconnection_analysis.py the same way analysis/q2_reserve_scenario.py extends the base
+interconnection_analysis.py the same way no_interconnection_limit/q2_reserve_scenario.py extends the base
 Q2b/Q2c model.
 
 Key difference from the base-case reserve scenario: storage's HEADROOM (up-reserve, i.e.
@@ -139,4 +139,4 @@ print(f'Energy + reserve total: ${combined_total_with_reserve:,.0f}')
 print()
 
 print('=== For reference: base case (no POI limit) combined reserve ===')
-print('Combined reserve revenue: $781,875 (from analysis/q2_reserve_scenario.py)')
+print('Combined reserve revenue: $781,875 (from no_interconnection_limit/q2_reserve_scenario.py)')

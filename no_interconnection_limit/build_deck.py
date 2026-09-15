@@ -141,7 +141,7 @@ def stat_tile(slide, x, y, w, h, value, label, value_color=BLUE):
               label, size=11.5, color=INK_SECONDARY)
 
 
-IMG = 'analysis/'  # image directory (run from repo root)
+IMG = 'no_interconnection_limit/'  # image directory (run from repo root)
 
 # =====================================================================
 # SLIDE 1 — Title

@@ -132,5 +132,5 @@ fig.text(0.5, 0.005,
           color=INK_MUTED, fontsize=9.5, style='italic', ha='center', va='bottom')
 
 plt.tight_layout(rect=[0, 0.035, 1, 1])
-plt.savefig('analysis/npv_by_config.png', facecolor=SURFACE)
+plt.savefig('no_interconnection_limit/npv_by_config.png', facecolor=SURFACE)
 print('saved npv_by_config.png')
