@@ -392,5 +392,20 @@ for i, (num, title, hrs, desc) in enumerate(items):
     if i < len(items) - 1:
         add_rect(s, Inches(0.55), ry + row_h - Inches(0.12), Inches(12.25), Pt(0.75), GRIDLINE)
 
+# =====================================================================
+# SLIDE 11 — Interconnection Limit Sensitivity (Extension)
+# =====================================================================
+s = add_slide(); set_bg(s)
+slide_header(s, 'Interconnection Sensitivity (Extension)', 'A 150 MW POI Limit Cuts Solar Revenue, but Storage Cushions the Blow', 11)
+
+add_picture_fit(s, 'q2_energy_only_combined.png', Inches(0.4), Inches(1.45), Inches(12.5), Inches(4.05))
+
+add_bullets(s, Inches(0.55), Inches(5.55), Inches(12.2), Inches(1.5), [
+    'Beyond the base exercise: re-runs Q2 with a 150 MW point-of-interconnection limit (vs. the unconstrained base case) to test sensitivity to a realistic POI constraint.',
+    'Standalone solar revenue falls from $18.80M to $15.70M (-16.5%) as more output is clipped at the tighter POI.',
+    'Standalone storage is unaffected ($1.98M, sized independently of the solar POI) — but paired with solar, storage revenue nearly doubles ($1.99M → $4.34M) as the added clipping gives it more free charging opportunities.',
+    'Net effect: combined revenue falls only 8.4% ($20.79M → $19.04M) — about half the standalone-solar decline, since storage recaptures roughly 57% of the otherwise-lost solar revenue.',
+], size=13, space_after=8)
+
 prs.save('GCV_Solar_Storage_Valuation.pptx')
 print('Saved GCV_Solar_Storage_Valuation.pptx with', len(prs.slides.__iter__.__self__._sldIdLst), 'slides')
