@@ -392,30 +392,5 @@ for i, (num, title, hrs, desc) in enumerate(items):
     if i < len(items) - 1:
         add_rect(s, Inches(0.55), ry + row_h - Inches(0.12), Inches(12.25), Pt(0.75), GRIDLINE)
 
-# =====================================================================
-# SLIDE 11 — Q3c Recommendation
-# =====================================================================
-s = add_slide(); set_bg(s)
-slide_header(s, 'Q3c  ·  Recommendation', 'Combined Solar + Storage Is the Recommended Installation', 11)
-
-add_picture_fit(s, IMG + 'q3_payback_comparison.png', Inches(0.4), Inches(1.5), Inches(7.7), Inches(3.5))
-
-add_rect(s, Inches(0.4), Inches(5.15), Inches(7.7), Inches(0.05), GRIDLINE)
-add_bullets(s, Inches(0.4), Inches(5.3), Inches(7.7), Inches(1.9), [
-    'Simple payback (capex ÷ 2023 backcast revenue, no financing/tax/O&M): Standalone Solar ~22 yrs, Standalone Storage ~38 yrs, Combined ~21 yrs.',
-], size=12.5, color=INK_MUTED)
-
-add_rect(s, Inches(8.35), Inches(1.5), Inches(4.5), Inches(5.35), SURFACE)
-box = s.shapes[-1]; box.line.color.rgb = BLUE; box.line.width = Pt(1.25)
-add_text(s, Inches(8.6), Inches(1.7), Inches(4.0), Inches(0.4), 'WHY COMBINED', size=12, color=BLUE, bold=True)
-add_bullets(s, Inches(8.6), Inches(2.15), Inches(4.05), Inches(3.2), [
-    "Closely matches (and slightly beats) standalone solar's payback — storage is effectively added at no economic cost.",
-    'Combined package pricing ($1.25/W solar, $350/kWh storage) saves ~$35M in capex vs. building both standalone.',
-    'Better hedges the Q3a outlook: storage value should rise as solar capture price erodes.',
-], size=12.5, space_after=12)
-add_text(s, Inches(8.6), Inches(5.35), Inches(4.05), Inches(1.6),
-          'Caveat: standalone storage still looks weak here because only day-ahead energy arbitrage was modeled. Real storage revenue also includes capacity & ancillary services (Q3b) — revisit before committing capital.',
-          size=11.5, color=INK_MUTED, italic=True, line_spacing=1.2)
-
 prs.save('GCV_Solar_Storage_Valuation.pptx')
 print('Saved GCV_Solar_Storage_Valuation.pptx with', len(prs.slides.__iter__.__self__._sldIdLst), 'slides')
