@@ -53,6 +53,37 @@ solar for the same 150 MW export slot. This is more than offset by storage's muc
 revenue in the combined case ($4.34M vs. $1.98M standalone) — the LP resolves this
 solar-vs-storage export tradeoff endogenously in favor of the higher-value option each hour.
 
+## Reserve (Headroom/Footroom) Scenario Under the POI Limit
+
+The main analysis also layers an illustrative NYISO reserve scenario on top of energy
+revenue (`../analysis/q2_reserve_scenario.py`, at $1.25/MW-hr). Extending that here reveals
+a genuine tension: **the same POI constraint that makes the energy interaction benefit much
+larger also makes storage's reserve contribution smaller.**
+
+- **Footroom** (down-reserve, i.e. ability to charge more) is unaffected by the POI, since
+  charging draws from the grid rather than competing for export capacity.
+- **Headroom** (up-reserve, i.e. ability to discharge more) now shares the 150 MW POI with
+  solar: `headroom_t = min(50 MW − discharge_t, 150 MW − solar_export_t − discharge_t)`.
+  During the 590 hours/year where solar's own export already claims most of the 150 MW,
+  storage's usable headroom drops well below its 50 MW nameplate.
+- Storage also ends up dispatching (charging or discharging) across *more* hours than in the
+  base case, since it now has a much larger pool of curtailed solar to charge from and must
+  spread discharge to fit within the shared POI — leaving fewer purely idle hours available
+  to offer the double-sided (headroom + footroom) reserve product.
+
+| | No POI Limit (base case) | 150 MW POI Limit |
+|---|---|---|
+| Standalone Storage reserve | $781,375 | $781,375 (unaffected) |
+| Combined headroom offered | 312,550 MWh | **106,110 MWh** |
+| Combined footroom offered | 312,950 MWh | 289,750 MWh |
+| **Combined reserve revenue** | **$781,875** | **$494,824** (−36.7%) |
+| Combined energy + reserve total | $21,573,672 | $19,537,241 |
+
+See `interconnection_reserve_scenario.py`. In short: don't assume a scenario that's good for
+one revenue stream (energy arbitrage) is automatically good for another (reserve) — here
+they move in opposite directions, because both draw on the same underlying physical
+resource (the storage's power rating and the shared export capacity).
+
 ## Caveats
 
 - Illustrative: a real interconnection study would need actual POI capacity, not an assumed
@@ -65,7 +96,12 @@ solar-vs-storage export tradeoff endogenously in favor of the higher-value optio
 
 ## Files
 
-- `interconnection_analysis.py` — the LP-based revenue computation (requires `scipy`; run
-  from the repo root: `python3 interconnection_scenario/interconnection_analysis.py`)
-- `interconnection_chart.py` — generates the comparison chart
+- `interconnection_analysis.py` — the LP-based energy revenue computation (requires
+  `scipy`; run from the repo root: `python3 interconnection_scenario/interconnection_analysis.py`)
+- `interconnection_reserve_scenario.py` — the reserve (headroom/footroom) computation under
+  the POI limit (requires `scipy`)
+- `interconnection_chart.py` — generates the energy interaction-benefit comparison chart
 - `interconnection_interaction_benefit.png` — output chart
+- `q2_energy_only_chart_interconnection.py` — same style as `analysis/q2_energy_only_by_config.png`,
+  using the 150 MW POI scenario's numbers
+- `q2_energy_only_by_config_interconnection.png` — output chart
