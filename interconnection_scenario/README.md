@@ -79,7 +79,7 @@ larger also makes storage's reserve contribution smaller.**
 | **Combined reserve revenue** | **$781,875** | **$494,824** (−36.7%) |
 | Combined energy + reserve total | $21,573,672 | $19,537,241 |
 
-See `interconnection_reserve_scenario.py`. In short: don't assume a scenario that's good for
+See `interconnection_reserve_scenario.py` and `interconnection_reserve_tradeoff.png`. In short: don't assume a scenario that's good for
 one revenue stream (energy arbitrage) is automatically good for another (reserve) — here
 they move in opposite directions, because both draw on the same underlying physical
 resource (the storage's power rating and the shared export capacity).
@@ -100,6 +100,8 @@ resource (the storage's power rating and the shared export capacity).
   `scipy`; run from the repo root: `python3 interconnection_scenario/interconnection_analysis.py`)
 - `interconnection_reserve_scenario.py` — the reserve (headroom/footroom) computation under
   the POI limit (requires `scipy`)
+- `interconnection_reserve_tradeoff_chart.py` — generates the energy-vs-reserve tradeoff chart
+- `interconnection_reserve_tradeoff.png` — output chart
 - `interconnection_chart.py` — generates the energy interaction-benefit comparison chart
 - `interconnection_interaction_benefit.png` — output chart
 - `q2_energy_only_chart_interconnection.py` — same style as `analysis/q2_energy_only_by_config.png`,
