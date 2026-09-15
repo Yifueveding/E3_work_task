@@ -1,8 +1,8 @@
 import matplotlib.pyplot as plt
 
-# Values from q2_reserve_scenario.py output ($1.25/MW-hr reserve price)
-energy_rev = {'solar': 18_910_425, 'storage': 2_473_753, 'combined': 21_391_036}
-reserve_rev = {'solar': 0, 'storage': 912_500, 'combined': 912_500}
+# Values from q2_reserve_scenario.py output ($1.25/MW-hr reserve price, multi-cycle LP dispatch, DA price basis)
+energy_rev = {'solar': 18_803_819, 'storage': 1_977_954, 'combined': 20_791_797}
+reserve_rev = {'solar': 0, 'storage': 781_375, 'combined': 781_875}
 
 BLUE, GREEN = '#2a78d6', '#2fa84f'
 INK_PRIMARY, INK_SECONDARY, INK_MUTED = '#0b0b0b', '#52514e', '#898781'
@@ -40,7 +40,7 @@ ax.bar(x, energy_vals, width=0.55, color=BLUE, zorder=3)
 for xi, e in zip(x, energy_vals):
     ax.text(xi, e + 0.4, f'${e:.1f}M', ha='center', va='bottom', fontsize=11, color=INK_PRIMARY, fontweight='bold')
 
-style_axes(ax, 'Energy-Only Revenue by Configuration (Real-Time Price Basis)')
+style_axes(ax, 'Energy-Only Revenue by Configuration (Day-Ahead Price Basis)')
 plt.tight_layout()
 plt.savefig('analysis/q2_energy_only_by_config.png', facecolor=SURFACE)
 print('saved q2_energy_only_by_config.png')
@@ -50,7 +50,7 @@ plt.close(fig)
 fig, ax = plt.subplots(figsize=(9, 5.3), dpi=200)
 fig.patch.set_facecolor(SURFACE); ax.set_facecolor(SURFACE)
 
-ax.bar(x, energy_vals, width=0.55, color=BLUE, zorder=3, label='Energy revenue (real-time price)')
+ax.bar(x, energy_vals, width=0.55, color=BLUE, zorder=3, label='Energy revenue (day-ahead price)')
 ax.bar(x, reserve_vals, width=0.55, bottom=energy_vals, color=GREEN, zorder=3,
        label='Reserve revenue (headroom + footroom @ $1.25/MW-hr)')
 

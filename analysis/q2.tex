@@ -20,8 +20,8 @@
 
 \section*{Inputs and Notation}
 
-All revenue is calculated from hourly 2023 NYISO N.Y.C. zone real-time prices.
-For hour $t$, let $p_t$ be the real-time energy price (\$/MWh) and $s_t$ be the
+All revenue is calculated from hourly 2023 NYISO N.Y.C. zone day-ahead prices.
+For hour $t$, let $p_t$ be the day-ahead energy price (\$/MWh) and $s_t$ be the
 normalized solar production shape. Solar output is assumed to be available for
 the full hour, so MW and MWh are numerically equivalent for each hourly interval.
 
@@ -37,20 +37,19 @@ Storage power capacity & 50 MW \\
 Storage energy capacity & 200 MWh \\
 Storage duration & $200\text{ MWh} / 50\text{ MW} = 4$ hours \\
 Round-trip efficiency & 100\% per provided input \\
-Dispatch simplification & One full charge/discharge cycle per day with perfect real-time foresight \\
+Dispatch & Per-day LP optimum (multi-cycle), perfect day-ahead foresight \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\textbf{Caveat on price basis:} we chose real-time (RT) prices because they reflect the
-actual settlement value of energy at the moment it is physically delivered. The tradeoff
-is that the storage dispatch model (Q2b/Q2c) assumes perfect foresight of which hours to
-charge and discharge --- an assumption that is far more realistic under day-ahead (DA)
-prices, which are actually published and known before the operating day, than under RT
-prices, which are not knowable in advance. Under a real operating strategy, storage would
-have to forecast RT prices rather than observe them, so the RT-basis storage revenue
-figures below likely overstate what is achievable in practice; a DA-basis run would be a
-useful sensitivity check.
+\textbf{Note on price basis:} we use day-ahead (DA) prices specifically because the
+storage dispatch model (Q2b/Q2c) assumes perfect foresight of which hours to charge and
+discharge within a day --- an assumption that is realistic under DA prices, since they are
+actually published and known before the operating day, but would not be realistic under
+real-time (RT) prices, which are not knowable in advance. A parallel RT-basis run was also
+completed for comparison: it earns modestly more (solar \$18.91M, storage \$2.73M) because
+it implicitly credits the model with foreknowledge of prices an RT-only strategy would not
+actually have in advance --- the DA-basis figures below are the more defensible base case.
 
 \section*{Q2a. Standalone Solar Revenue}
 
@@ -62,7 +61,7 @@ G_t = \min(s_t \times 300\text{ MW},\ 250\text{ MW})
 \]
 
 Annual backcast solar revenue is the sum of hourly delivered energy times the
-real-time price:
+day-ahead price:
 
 \[
 R_{\text{solar}} = \sum_{t=1}^{8760} G_t \times p_t
@@ -75,13 +74,13 @@ Using the 2023 hourly data:
 \]
 
 \[
-R_{\text{solar}} = \$18{,}910{,}425
+R_{\text{solar}} = \$18{,}803{,}819
 \]
 
 \[
 \text{Solar capture price}
-= \frac{\$18{,}910{,}425}{551{,}454\text{ MWh}}
-= \$34.29/\text{MWh}
+= \frac{\$18{,}803{,}819}{551{,}454\text{ MWh}}
+= \$34.10/\text{MWh}
 \]
 
 The inverter cap clips 372 MWh, equal to 0.07\% of gross solar generation, so
@@ -89,98 +88,94 @@ clipping has a negligible effect on standalone solar revenue.
 
 \section*{Q2b. Standalone Storage Revenue}
 
-Storage is modeled as daily energy arbitrage. For each day $d$, the battery
-charges during the four lowest-priced hours and discharges during the four
-highest-priced hours:
+Storage is modeled as daily energy arbitrage, but rather than assume a single fixed
+4-hour charge / 4-hour discharge cycle, each day $d$ is solved as its own linear program:
+choose hourly charge $c_h \geq 0$ and discharge $g_h \geq 0$ (both $\leq 50$ MW) to
 
 \[
-R_{\text{storage},d}
-= 50\text{ MW} \times
-\left(
-\sum_{h \in H^{\text{high}}_d} p_h
--
-\sum_{h \in H^{\text{low}}_d} p_h
-\right)
+\max \sum_{h \in d} p_h (g_h - c_h)
 \]
 
-where $H^{\text{high}}_d$ is the set of the day's four highest-price hours and
-$H^{\text{low}}_d$ is the set of the day's four lowest-price hours.
+subject to, for every hour $h$ in day $d$:
+
+\[
+0 \ \leq\ \sum_{h' \leq h,\ h' \in d} (c_{h'} - g_{h'}) \ \leq\ 200\text{ MWh}
+\]
+
+i.e. the running state of charge must stay within the battery's 200 MWh energy limit
+at every hour, starting the day at zero, with 100\% round-trip efficiency (per the given
+input, so no loss term). This lets the optimizer discover \emph{multiple} charge/discharge
+cycles within a day when day-ahead prices oscillate enough to make it profitable, rather
+than assuming exactly one cycle.
+
+Inspecting individual days confirms this is a real effect, not a solver artifact. For
+example, April 11 has two separate profitable round trips across the day (an overnight
+dip into a morning peak, and a midday dip into an evening peak) --- the optimizer uses 8
+charge hours and 8 discharge hours that day, double a single 4-hour/4-hour cycle, because
+day-ahead prices simply have more usable volatility in a day than one high/low pair can
+capture. Solving this per-day LP across all of 2023 earns 14.75\% more than the naive
+``4 lowest-price hours charge, 4 highest-price hours discharge'' heuristic (\$1.978M vs.\
+\$1.724M) --- large enough that we adopted the LP as the primary method rather than a
+footnote.
 
 Annual standalone storage revenue is:
 
 \[
 R_{\text{storage}}
 = \sum_{d=1}^{365} R_{\text{storage},d}
-= \$2{,}473{,}753
+= \$1{,}977{,}954
 \]
 
 Normalized by installed capacity:
 
 \[
-\frac{\$2{,}473{,}753}{50{,}000\text{ kW}}
-= \$49.48/\text{kW-year}
+\frac{\$1{,}977{,}954}{50{,}000\text{ kW}}
+= \$39.56/\text{kW-year}
 \]
 
 \[
-\frac{\$2{,}473{,}753}{200{,}000\text{ kWh}}
-= \$12.37/\text{kWh-year}
+\frac{\$1{,}977{,}954}{200{,}000\text{ kWh}}
+= \$9.89/\text{kWh-year}
 \]
+
+\textbf{Caveat:} this still assumes zero degradation/cycling cost, so additional cycling
+is ``free'' here --- a real operator would cycle less than this LP optimum once a
+per-cycle degradation cost is included (Q3b). Treat this as an upper bound on what
+multi-cycle dispatch can add, not a realistic operating recommendation on its own.
 
 \section*{Q2c. Combined Solar + Storage Revenue}
 
-The combined case keeps the same solar export calculation as standalone solar.
-Storage first charges from otherwise-clipped solar energy at zero opportunity
-cost, then charges any remaining daily energy requirement from the grid during
-low-price hours.
-
-For each hour, clipped solar is:
+The combined case keeps the same solar export calculation as standalone solar. Storage
+uses the same per-day LP as Q2b, except each hour's charging can first draw up to
+$\min(C_t, 50\text{ MW})$ for \$0 from that hour's otherwise-clipped solar,
 
 \[
 C_t = \max(s_t \times 300\text{ MW} - 250\text{ MW},\ 0)
 \]
 
-Daily storage charging from clipped solar is limited by storage power and daily
-energy capacity:
+before any additional charging that hour is priced at the grid rate --- the optimizer
+naturally prefers the \$0 option first since it strictly lowers cost. Discharge and the
+multi-cycle structure are otherwise identical to Q2b. Across 2023, the model uses:
 
 \[
-E^{\text{clip}}_d
-= \min\left(
-200\text{ MWh},\
-\sum_{t \in d} \min(C_t,\ 50\text{ MW})
-\right)
-\]
-
-The remaining daily storage charge is bought from the grid:
-
-\[
-E^{\text{grid}}_d = 200\text{ MWh} - E^{\text{clip}}_d
-\]
-
-Storage then discharges during the day's four highest-price hours, as in the
-standalone storage case. Across 2023, the model uses:
-
-\[
-\sum_d E^{\text{clip}}_d = 372\text{ MWh}
-\]
-
-\[
-\sum_d E^{\text{grid}}_d = 72{,}628\text{ MWh}
+\sum_t \min(C_t, 50) = 372\text{ MWh (free)}, \qquad
+\text{grid-charged} = 125{,}595\text{ MWh}
 \]
 
 The resulting combined revenues are:
 
 \[
-R_{\text{combined solar}} = \$18{,}910{,}425
+R_{\text{combined solar}} = \$18{,}803{,}819
 \]
 
 \[
-R_{\text{combined storage}} = \$2{,}480{,}611
+R_{\text{combined storage}} = \$1{,}987{,}978
 \]
 
 \[
 R_{\text{combined total}}
-= \$18{,}910{,}425 + \$2{,}480{,}611
-= \$21{,}391{,}036
+= \$18{,}803{,}819 + \$1{,}987{,}978
+= \$20{,}791{,}797
 \]
 
 The interaction benefit versus building standalone solar and standalone storage
@@ -189,13 +184,13 @@ separately is:
 \[
 R_{\text{combined total}} -
 \left(R_{\text{solar}} + R_{\text{storage}}\right)
-= \$21{,}391{,}036 - (\$18{,}910{,}425 + \$2{,}473{,}753)
-= \$6{,}857
+= \$20{,}791{,}797 - (\$18{,}803{,}819 + \$1{,}977{,}954)
+= \$10{,}023
 \]
 
 \[
-\frac{\$6{,}857}{\$21{,}384{,}178}
-= 0.032\%
+\frac{\$10{,}023}{\$20{,}781{,}773}
+= 0.048\%
 \]
 
 \section*{Q2d. Reserve (Headroom/Footroom) Scenario --- Extension Beyond the Base Exercise}
@@ -214,22 +209,25 @@ products --- standalone solar earns \$0 in reserve revenue:
 R_{\text{solar reserve}} = \$0
 \]
 
-Storage reuses the Q2b/Q2c daily charge/discharge schedule (4 lowest-price hours charge,
-4 highest-price hours discharge, 16 hours idle). While charging it can offer 50 MW of
-footroom (no headroom, since it is already using its full power to charge); while
-discharging the reverse (50 MW headroom, no footroom); while idle it can offer the full
-50 MW of \emph{both} headroom and footroom simultaneously:
+Storage's reserve capacity is now classified hour-by-hour from the actual Q2b/Q2c LP
+dispatch solution, not a fixed 4-hour/4-hour/16-hour split: an hour where the LP charges
+(and doesn't discharge) offers 50 MW of footroom only; an hour where it discharges (and
+doesn't charge) offers 50 MW of headroom only; an idle hour offers the full 50 MW of
+\emph{both} headroom and footroom simultaneously. Because multi-cycle dispatch (Q2b) uses
+more charge/discharge hours and leaves fewer hours idle than the old single-cycle
+heuristic, standalone storage actually has \emph{less} total reserve capacity to offer
+here than it would under the simpler heuristic:
 
 \[
-R_{\text{storage reserve}} = \$1.25 \times (365{,}000 + 365{,}000)\text{ MW-hr} = \$912{,}500
+R_{\text{storage reserve}} = \$1.25 \times (312{,}550 + 312{,}550)\text{ MW-hr} = \$781{,}375
 \]
 
 In the combined system, all reserve capacity comes from the storage component only ---
-the solar component still cannot offer reserve, so this is identical to standalone
-storage's reserve revenue:
+the solar component still cannot offer reserve --- using the same hour-by-hour
+classification applied to the combined dispatch:
 
 \[
-R_{\text{combined reserve}} = \$912{,}500
+R_{\text{combined reserve}} = \$1.25 \times (312{,}550 + 312{,}950)\text{ MW-hr} = \$781{,}875
 \]
 
 \begin{table}[h!]
@@ -238,9 +236,9 @@ R_{\text{combined reserve}} = \$912{,}500
 \toprule
 \textbf{Configuration} & \textbf{Energy-Only} & \textbf{Reserve} & \textbf{Energy + Reserve} & \textbf{Reserve Uplift} \\
 \midrule
-Standalone solar & \$18.910M & \$0.000M & \$18.910M & 0.0\% \\
-Standalone storage & \$2.474M & \$0.913M & \$3.386M & 36.9\% \\
-Combined solar + storage & \$21.391M & \$0.913M & \$22.304M & 4.3\% \\
+Standalone solar & \$18.804M & \$0.000M & \$18.804M & 0.0\% \\
+Standalone storage & \$1.978M & \$0.781M & \$2.759M & 39.5\% \\
+Combined solar + storage & \$20.792M & \$0.782M & \$21.574M & 3.8\% \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -251,17 +249,20 @@ Combined solar + storage & \$21.391M & \$0.913M & \$22.304M & 4.3\% \\
 \includegraphics[width=0.48\textwidth]{q2_energy_plus_reserve_by_config.png}
 \end{figure}
 
-Storage is the only source of reserve value here (+36.9\% on a standalone basis) because
-its reserve capacity comes free alongside energy dispatch and, while idle (16 of 24
-hours/day), it can stack both headroom and footroom at the same time. Solar contributes
-nothing, since it cannot commit firm capacity to a reserve product --- so the combined
-system's uplift (+4.3\%) is diluted relative to standalone storage's, simply because
-storage is a small share of the combined system's total revenue. This scenario is
-illustrative: real NYISO reserve products have stricter response-time, minimum-run, and
-co-optimization rules than modeled here, and a resource cannot literally be paid full
-price for headroom and footroom at the same instant if doing so double-counts the same
-physical capacity across products --- a more rigorous treatment is one of the natural
-extensions noted in Q3b.
+Storage is the only source of reserve value here (+39.5\% on a standalone basis) because
+its reserve capacity comes free alongside energy dispatch, and idle hours can stack both
+headroom and footroom at the same time. Solar contributes nothing, since it cannot commit
+firm capacity to a reserve product --- so the combined system's uplift (+3.8\%) is diluted
+relative to standalone storage's, simply because storage is a small share of the combined
+system's total revenue. Note the direct tension with Q2b: multi-cycle dispatch earns more
+energy revenue precisely by keeping the battery busy charging or discharging more of the
+day, which leaves fewer idle hours available to sell as reserve --- a real operator would
+face a genuine energy-vs-reserve tradeoff that this model does not co-optimize. This
+scenario is illustrative: real NYISO reserve products have stricter response-time,
+minimum-run, and co-optimization rules than modeled here, and a resource cannot literally
+be paid full price for headroom and footroom at the same instant if doing so double-counts
+the same physical capacity across products --- a more rigorous treatment is one of the
+natural extensions noted in Q3b.
 
 \section*{Summary}
 
@@ -271,9 +272,9 @@ extensions noted in Q3b.
 \toprule
 \textbf{Configuration} & \textbf{2023 Backcast Revenue} & \textbf{Key Method} \\
 \midrule
-Standalone solar & \$18.910M & Hourly solar output $\times$ hourly RT price \\
-Standalone storage & \$2.474M & Daily four-low / four-high arbitrage \\
-Combined solar + storage & \$21.391M & Solar revenue plus storage with clipped solar charging first \\
+Standalone solar & \$18.804M & Hourly solar output $\times$ hourly DA price \\
+Standalone storage & \$1.978M & Per-day LP-optimized multi-cycle arbitrage \\
+Combined solar + storage & \$20.792M & Solar revenue plus storage with clipped solar charging first \\
 \bottomrule
 \end{tabular}
 \end{table}

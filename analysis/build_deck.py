@@ -168,9 +168,9 @@ slide_header(s, 'Executive Summary', 'Combined solar + storage is the recommende
 
 tiles = [
     ('$33.94/MWh', '2023 avg. NYISO N.Y.C.\nday-ahead price'),
-    ('$18.9M', 'Standalone solar\n2023 backcast revenue'),
-    ('$2.5M', 'Standalone storage\n2023 backcast revenue'),
-    ('$21.4M', 'Combined system\n2023 backcast revenue'),
+    ('$18.8M', 'Standalone solar\n2023 backcast revenue'),
+    ('$2.0M', 'Standalone storage\n2023 backcast revenue'),
+    ('$20.8M', 'Combined system\n2023 backcast revenue'),
 ]
 tw, th, gap = Inches(2.75), Inches(1.35), Inches(0.25)
 x0 = Inches(0.55)
@@ -181,7 +181,7 @@ add_bullets(s, Inches(0.55), Inches(3.35), Inches(6.0), Inches(3.4), [
     'Prices peak in winter (Feb, cold-snap heating demand) and again in summer (Jul, A/C peak); shoulder months (spring/fall) trough well below average.',
     'Solar earns slightly above the flat average because its output aligns with summer peak-price hours; it earns below average in winter.',
     'Storage value tracks price volatility, not price level — Jul and Feb (largest daily price swings) are its best months.',
-    "Pairing solar + storage adds only a marginal energy-arbitrage benefit today (+0.03%) since inverter clipping is minimal, but the combined package's cheaper per-unit equipment pricing saves ~$35M in capex vs. building both standalone.",
+    "Pairing solar + storage adds only a marginal energy-arbitrage benefit today (+0.05%) since inverter clipping is minimal, but the combined package's cheaper per-unit equipment pricing saves ~$35M in capex vs. building both standalone.",
 ], size=14.5)
 
 add_rect(s, Inches(6.85), Inches(3.35), Inches(5.95), Inches(3.55), SURFACE)
@@ -239,7 +239,7 @@ chips = [
     ('300 MW-DC / 250 MW-AC', 'Solar Size / Inverter Limit'),
     ('50 MW / 200 MWh (4-hr)', 'Storage Power / Energy'),
     ('100%', 'Round-Trip Efficiency'),
-    ('Real-Time (RT)', 'Price Basis — see caveat below'),
+    ('Day-Ahead (DA)', 'Price Basis — see note below'),
 ]
 chip_w = Inches((12.2 - 3 * 0.15) / 4)
 chip_h = Inches(0.72)
@@ -258,10 +258,10 @@ add_text(s, Inches(0.55), Inches(2.24), Inches(12.2), Inches(0.24),
           size=10, color=INK_MUTED, italic=True)
 
 rows = [
-    ('Standalone Solar', 'Delivered output = min(Solar Shape × 300 MW-DC, 250 MW-AC inverter limit). Revenue = Σ(delivered MW × RT price).', 0.5),
-    ('Standalone Storage', '4-hr duration (200 MWh ÷ 50 MW). 1 full cycle/day: charge the day\'s 4 lowest-price hours, discharge the 4 highest-price hours. Perfect real-time price foresight; round-trip efficiency = 100% (per given input); no degradation or cycling cost; energy arbitrage only in this base case (see Reserve Scenario row below).', 0.85),
-    ('Combined Solar + Storage', 'Solar identical to standalone. Storage charges first from otherwise-clipped/curtailed solar (zero cost), then tops up from the grid at the day\'s lowest remaining prices; discharge unchanged.', 0.65),
-    ('Reserve Scenario (Q2d)', 'Extension beyond the base exercise: reserve capacity valued at $1.25/MW-hr (midpoint of $1–1.5/MW). Headroom = up-reserve capacity; footroom = down-reserve capacity. Solar cannot provide reserve (variable, non-dispatchable) → $0. Storage offers footroom while charging, headroom while discharging, both simultaneously while idle → +$0.91M. Details on Slide 8.', 0.9),
+    ('Standalone Solar', 'Delivered output = min(Solar Shape × 300 MW-DC, 250 MW-AC inverter limit). Revenue = Σ(delivered MW × DA price).', 0.5),
+    ('Standalone Storage', 'Per-day linear program (50 MW power limit, 200 MWh energy limit, SOC starts at 0) chooses the revenue-maximizing hourly charge/discharge schedule — letting the optimizer find multiple cycles/day when DA prices oscillate enough, rather than assuming one fixed 4-hr cycle (worth +14.75% vs. that heuristic). Perfect day-ahead price foresight; RTE = 100% (per given input); no degradation/cycling cost; energy arbitrage only in this base case (see Reserve Scenario row below).', 1.0),
+    ('Combined Solar + Storage', 'Solar identical to standalone. Storage uses the same per-day LP, except charging can draw up to 50 MW/hr for $0 from that hour\'s otherwise-clipped solar before paying the grid price for any remaining need.', 0.65),
+    ('Reserve Scenario (Q2d)', 'Extension beyond the base exercise: reserve capacity valued at $1.25/MW-hr (midpoint of $1–1.5/MW). Headroom = up-reserve capacity; footroom = down-reserve capacity, classified hour-by-hour from the actual LP dispatch. Solar cannot provide reserve (variable, non-dispatchable) → $0. Storage → +$0.78M — less than a single-cycle heuristic would offer, since multi-cycling leaves fewer idle hours available as reserve. Details on Slide 8.', 0.95),
 ]
 
 ty = Inches(2.56)
@@ -276,7 +276,7 @@ for label, desc, h in rows:
     add_rect(s, Inches(0.55), ry - Inches(0.08), col1_w + col2_w, Pt(1), GRIDLINE)
 
 add_text(s, Inches(0.55), ry + Inches(0.06), Inches(12.2), Inches(0.6),
-          'All simplifications are intentional given the exercise\'s time-box (Q2b/2c each capped at ~1 hour); more rigorous operating assumptions are proposed in Q3b. Caveat: RT-basis storage dispatch assumes perfect real-time foresight — a stronger assumption than DA foresight, since DA prices are published in advance and RT prices are not; a DA-basis run would be a useful sensitivity check.',
+          'All simplifications are intentional given the exercise\'s time-box (Q2b/2c each capped at ~1 hour); more rigorous operating assumptions are proposed in Q3b. Note: we use DA prices specifically because the LP dispatch assumes perfect price foresight — realistic under DA (published in advance) but not under real-time (not knowable in advance). A parallel RT-basis run earns modestly more (solar $18.91M, storage $2.73M) precisely because it credits foreknowledge an RT-only strategy wouldn\'t really have.',
           size=11, color=INK_MUTED, italic=True)
 
 # =====================================================================
@@ -286,9 +286,9 @@ s = add_slide(); set_bg(s)
 slide_header(s, 'Q2  ·  Results', '2023 Backcast Revenue by Configuration', 6)
 add_picture_fit(s, IMG + 'q2_revenue_by_config.png', Inches(0.4), Inches(1.5), Inches(7.9), Inches(5.4))
 add_bullets(s, Inches(8.5), Inches(1.7), Inches(4.35), Inches(4.9), [
-    'Standalone Solar: $18.91M (551,454 MWh delivered; avg. capture price $34.29/MWh).',
-    'Standalone Storage: $2.47M ($49.48/kW-yr, $12.37/kWh-yr) — energy arbitrage only.',
-    'Combined System: $21.39M — essentially the sum of the two standalone revenues.',
+    'Standalone Solar: $18.80M (551,454 MWh delivered; avg. capture price $34.10/MWh).',
+    'Standalone Storage: $1.98M ($39.56/kW-yr, $9.89/kWh-yr) — multi-cycle LP-optimized energy arbitrage only.',
+    'Combined System: $20.79M — essentially the sum of the two standalone revenues.',
     'Solar dominates the revenue stack for all three configurations; storage revenue from energy arbitrage alone is comparatively small.',
 ], size=14)
 
@@ -301,7 +301,7 @@ slide_header(s, 'Q2c  ·  Solar + Storage Interaction', 'The Pairing Benefit Is 
 add_bullets(s, Inches(0.55), Inches(1.7), Inches(6.1), Inches(4.5), [
     'In the combined system, storage can charge from solar output that would otherwise be clipped by the 250 MW inverter limit — at zero marginal cost.',
     'Gross DC solar generation: 551,826 MWh; clipped/curtailed: only 372 MWh (0.07% of gross) — the 300/250 MW (1.2x) DC:AC ratio isn\'t aggressive enough to cause meaningful clipping.',
-    'Combined revenue ($21,391,036) exceeds the simple sum of standalone solar + standalone storage ($21,384,178) by just $6,857 (+0.03%).',
+    'Combined revenue ($20,791,797) exceeds the simple sum of standalone solar + standalone storage ($20,781,773) by just $10,023 (+0.05%).',
 ], size=15, space_after=16)
 
 add_rect(s, Inches(7.1), Inches(1.7), Inches(5.7), Inches(3.0), SURFACE)
@@ -327,7 +327,7 @@ add_picture_fit(s, IMG + 'q2_energy_plus_reserve_by_config.png', Inches(6.85), I
 
 add_bullets(s, Inches(0.55), Inches(5.15), Inches(12.2), Inches(1.5), [
     'Beyond the base exercise: estimates additional revenue from offering NYISO reserve capacity at $1.25/MW-hr (midpoint of the $1–1.5/MW range you flagged). Headroom = capacity to increase output on call; footroom = capacity to decrease output on call.',
-    'Solar cannot provide reserve — it is a variable, non-dispatchable resource, so it earns $0. Storage reuses the Q2b/c daily schedule (footroom while charging, headroom while discharging, both simultaneously while idle) → +$0.91M (+36.9%). Combined reserve comes entirely from the storage component → +$0.91M (+4.3%).',
+    'Solar cannot provide reserve — it is a variable, non-dispatchable resource, so it earns $0. Storage is classified hour-by-hour from its actual Q2b/c LP dispatch (footroom while charging, headroom while discharging, both simultaneously while idle) → +$0.78M (+39.5%) — less than a single-cycle heuristic would offer, since multi-cycling leaves fewer idle hours. Combined reserve comes entirely from the storage component → +$0.78M (+3.8%).',
 ], size=12.5, space_after=6)
 
 add_text(s, Inches(0.55), Inches(6.72), Inches(12.2), Inches(0.3),
@@ -350,7 +350,7 @@ cols = [
         "NYC's Peaker Rule retirements tighten local capacity. Risk: storage cannibalization if buildout outpaces the opportunity.",
     ], ORANGE),
     ('Combined System', 'Interaction benefit should grow', [
-        "Today's interaction (+0.03%) reflects minimal clipping.",
+        "Today's interaction (+0.05%) reflects minimal clipping.",
         'As solar penetration rises, a co-located battery\'s ability to absorb otherwise-curtailed solar becomes more valuable — strengthening the strategic case for pairing.',
     ], INK),
 ]
@@ -370,7 +370,7 @@ slide_header(s, 'Q3b  ·  Proposed Follow-On Study', 'A More Complete Revenue Fo
 
 items = [
     ('1', 'Forward price shapes', '~3 hrs', 'Replace the 2023 backcast with a forward-looking hourly price shape reflecting expected capacity additions/retirements and load growth (electrification, data centers), grounded in published NYISO / NYSERDA CLCPA outlooks.'),
-    ('2', 'Realistic operating assumptions', '~2 hrs', 'Round-trip efficiency ~85–90% (not 100%), solar degradation (~0.5%/yr), battery degradation/augmentation, multi-cycle-per-day dispatch where economic.'),
+    ('2', 'Realistic operating assumptions', '~2 hrs', 'Round-trip efficiency ~85–90% (not 100%), solar degradation (~0.5%/yr), battery degradation/augmentation cost. Q2b already uses a per-day LP that finds multi-cycle dispatch worth +14.75% under a zero-cost assumption — adding a realistic per-cycle degradation cost would temper that toward an economically optimal cycling frequency.'),
     ('3', 'Capacity & ancillary revenue', '~2 hrs', "Add NYISO capacity market (ICAP) and frequency regulation revenue — often the majority of a merchant battery's revenue stack. Q2d sketches an illustrative reserve add-on; a rigorous version (real product rules, co-optimization, capacity market) is still the single biggest gap."),
     ('4', 'Scenario / sensitivity analysis', '~2 hrs', 'High/low cases on load growth, gas prices, and renewable build-out pace, given how uncertain the 10-year price path is.'),
     ('5', 'Full pro forma', '~1 hr', 'Layer in provided capex, O&M, financing, and ITC/IRA tax credit treatment to compute NPV/IRR rather than simple payback.'),
@@ -402,19 +402,19 @@ add_picture_fit(s, IMG + 'q3_payback_comparison.png', Inches(0.4), Inches(1.5), 
 
 add_rect(s, Inches(0.4), Inches(5.15), Inches(7.7), Inches(0.05), GRIDLINE)
 add_bullets(s, Inches(0.4), Inches(5.3), Inches(7.7), Inches(1.9), [
-    'Simple payback (capex ÷ 2023 backcast revenue, no financing/tax/O&M): Standalone Solar ~21 yrs, Standalone Storage ~30 yrs, Combined ~21 yrs.',
+    'Simple payback (capex ÷ 2023 backcast revenue, no financing/tax/O&M): Standalone Solar ~22 yrs, Standalone Storage ~38 yrs, Combined ~21 yrs.',
 ], size=12.5, color=INK_MUTED)
 
 add_rect(s, Inches(8.35), Inches(1.5), Inches(4.5), Inches(5.35), SURFACE)
 box = s.shapes[-1]; box.line.color.rgb = BLUE; box.line.width = Pt(1.25)
 add_text(s, Inches(8.6), Inches(1.7), Inches(4.0), Inches(0.4), 'WHY COMBINED', size=12, color=BLUE, bold=True)
 add_bullets(s, Inches(8.6), Inches(2.15), Inches(4.05), Inches(3.2), [
-    "Matches standalone solar's payback almost exactly — storage is effectively added at no economic cost.",
+    "Closely matches (and slightly beats) standalone solar's payback — storage is effectively added at no economic cost.",
     'Combined package pricing ($1.25/W solar, $350/kWh storage) saves ~$35M in capex vs. building both standalone.',
     'Better hedges the Q3a outlook: storage value should rise as solar capture price erodes.',
 ], size=12.5, space_after=12)
 add_text(s, Inches(8.6), Inches(5.35), Inches(4.05), Inches(1.6),
-          'Caveat: standalone storage still looks weak here because only real-time energy arbitrage was modeled. Real storage revenue also includes capacity & ancillary services (Q3b) — revisit before committing capital.',
+          'Caveat: standalone storage still looks weak here because only day-ahead energy arbitrage was modeled. Real storage revenue also includes capacity & ancillary services (Q3b) — revisit before committing capital.',
           size=11.5, color=INK_MUTED, italic=True, line_spacing=1.2)
 
 prs.save('GCV_Solar_Storage_Valuation.pptx')

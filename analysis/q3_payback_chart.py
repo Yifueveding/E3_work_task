@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 
 configs = ['Standalone\nSolar', 'Standalone\nStorage', 'Combined\nSolar + Storage']
 capex = [405_000_000, 75_000_000, 445_000_000]
-revenue = [18_910_425, 2_473_753, 21_391_036]
+revenue = [18_803_819, 1_977_954, 20_791_797]
 payback = [c/r for c, r in zip(capex, revenue)]
 
 BLUE = '#2a78d6'

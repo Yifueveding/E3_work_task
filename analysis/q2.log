@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.1.16)  14 SEP 2026 17:48
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.1.16)  14 SEP 2026 20:08
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -275,26 +275,22 @@ e
 
 {/usr/local/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 [2] [3]
-<q2_energy_only_by_config.png, id=26, 650.43pt x 383.031pt>
+<q2_energy_only_by_config.png, id=25, 650.43pt x 383.031pt>
 File: q2_energy_only_by_config.png Graphic file (type png)
 <use q2_energy_only_by_config.png>
-Package pdftex.def Info: q2_energy_only_by_config.png  used on input line 250.
+Package pdftex.def Info: q2_energy_only_by_config.png  used on input line 248.
 (pdftex.def)             Requested size: 235.88676pt x 138.908pt.
-<q2_energy_plus_reserve_by_config.png, id=28, 650.43pt x 383.031pt>
+<q2_energy_plus_reserve_by_config.png, id=27, 650.43pt x 383.031pt>
 File: q2_energy_plus_reserve_by_config.png Graphic file (type png)
 <use q2_energy_plus_reserve_by_config.png>
 Package pdftex.def Info: q2_energy_plus_reserve_by_config.png  used on input li
-ne 251.
+ne 249.
 (pdftex.def)             Requested size: 235.88676pt x 138.908pt.
-
-Overfull \hbox (12.43416pt too wide) in paragraph at lines 270--279
+ [4 <./q2_energy_only_by_config.png> <./q2_energy_plus_reserve_by_config.png>]
+Overfull \hbox (12.43416pt too wide) in paragraph at lines 271--280
  [][] 
  []
 
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-[4 <./q2_energy_only_by_config.png> <./q2_energy_plus_reserve_by_config.png>]
 [5] (./q2.aux) ) 
 Here is how much of TeX's memory you used:
  4144 strings out of 478268
@@ -310,19 +306,18 @@ cm/cmbx10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/c
 m/cmbx12.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm
 /cmex10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/
 cmmi10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/c
-mmi6.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmm
-i8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10
-.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.p
-fb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb>
-</usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></u
-sr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></us
-r/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/
-local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/l
-ocal/texlive/2022/texmf-dist/fonts/type1/public/cm-super/sfrm1095.pfb>
-Output written on q2.pdf (5 pages, 292283 bytes).
+mmi8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr
+10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12
+.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pf
+b></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb
+></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb><
+/usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></u
+sr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></us
+r/local/texlive/2022/texmf-dist/fonts/type1/public/cm-super/sfrm1095.pfb>
+Output written on q2.pdf (5 pages, 288062 bytes).
 PDF statistics:
- 96 PDF objects out of 1000 (max. 8388607)
- 56 compressed objects within 1 object stream
+ 91 PDF objects out of 1000 (max. 8388607)
+ 53 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  11 words of extra memory for PDF output out of 10000 (max. 10000000)
 
