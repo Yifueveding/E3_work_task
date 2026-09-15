@@ -50,7 +50,7 @@ for xi, e, r, t in zip(x, energy_vals, reserve_vals, totals):
         ax.text(xi, e + r / 2, f'+${r:.2f}M', ha='center', va='center', fontsize=8.5, color='white', fontweight='bold')
 
 ax.set_xticks(x); ax.set_xticklabels(labels, color=INK_SECONDARY, fontsize=10.5)
-ax.set_ylabel('2023 Backcast Revenue ($M)', color=INK_SECONDARY, fontsize=10)
+ax.set_ylabel('2023 Backcast Revenue ($M)', color=INK_PRIMARY, fontsize=13)
 ax.set_title('Energy + Reserve Revenue by Configuration (150 MW Interconnection Limit)',
               color=INK_PRIMARY, fontsize=13, fontweight='bold', pad=14, loc='left')
 ax.set_ylim(0, YMAX)
@@ -59,7 +59,7 @@ ax.set_axisbelow(True)
 for s in ['top', 'right', 'left']:
     ax.spines[s].set_visible(False)
 ax.spines['bottom'].set_color(BASELINE)
-ax.tick_params(axis='y', colors=INK_MUTED, length=0, labelsize=9)
+ax.tick_params(axis='y', colors=INK_PRIMARY, length=0, labelsize=13)
 ax.tick_params(axis='x', length=0)
 ax.legend(loc='upper left', frameon=False, fontsize=9, labelcolor=INK_SECONDARY, bbox_to_anchor=(0.0, 1.05))
 

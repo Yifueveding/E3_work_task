@@ -49,7 +49,7 @@ ax.text(x[2], combined_solar_m + combined_storage_m / 2, f'${combined_storage_m:
 # Shared y-axis scale with the base-case chart so bar heights are directly comparable
 YMAX = max(BASE_MAX_TOTAL, combined_total_m) * 1.22
 ax.set_xticks(x); ax.set_xticklabels(labels, color=INK_SECONDARY, fontsize=10.5)
-ax.set_ylabel('2023 Backcast Revenue ($M)', color=INK_SECONDARY, fontsize=10)
+ax.set_ylabel('2023 Backcast Revenue ($M)', color=INK_PRIMARY, fontsize=13)
 ax.set_title('Energy-Only Revenue by Configuration (150 MW Interconnection Limit)',
               color=INK_PRIMARY, fontsize=13, fontweight='bold', pad=14, loc='left')
 ax.set_ylim(0, YMAX)
@@ -58,7 +58,7 @@ ax.set_axisbelow(True)
 for s in ['top', 'right', 'left']:
     ax.spines[s].set_visible(False)
 ax.spines['bottom'].set_color(BASELINE)
-ax.tick_params(axis='y', colors=INK_MUTED, length=0, labelsize=9)
+ax.tick_params(axis='y', colors=INK_PRIMARY, length=0, labelsize=13)
 ax.tick_params(axis='x', length=0)
 ax.legend(loc='upper left', frameon=False, fontsize=9.5, labelcolor=INK_SECONDARY, bbox_to_anchor=(0.0, 1.06))
 

@@ -36,14 +36,14 @@ ax.annotate('', xy=(1, vals[1] + ymax * 0.14), xytext=(0, vals[0] + ymax * 0.14)
 ax.text(0.5, max(vals) + ymax * 0.2, 'grows sharply', ha='center', va='bottom',
         fontsize=11, color=GREEN, fontweight='bold')
 ax.set_xticks(x); ax.set_xticklabels(labels, color=INK_SECONDARY, fontsize=10.5)
-ax.set_ylabel('Energy Interaction Benefit (%)', color=INK_SECONDARY, fontsize=10)
+ax.set_ylabel('Energy Interaction Benefit (%)', color=INK_PRIMARY, fontsize=13)
 ax.set_title('Energy: Interaction Benefit', color=INK_PRIMARY, fontsize=13, fontweight='bold', pad=12, loc='left')
 ax.grid(axis='y', color=GRIDLINE, linewidth=0.8, zorder=0)
 ax.set_axisbelow(True)
 for s in ['top', 'right', 'left']:
     ax.spines[s].set_visible(False)
 ax.spines['bottom'].set_color(BASELINE)
-ax.tick_params(axis='y', colors=INK_MUTED, length=0, labelsize=9)
+ax.tick_params(axis='y', colors=INK_PRIMARY, length=0, labelsize=13)
 ax.tick_params(axis='x', length=0)
 
 # ---------- Panel 2: Combined reserve revenue (shrinks) ----------
@@ -60,14 +60,14 @@ ax.annotate('', xy=(1, vals[1] + ymax * 0.14), xytext=(0, vals[0] + ymax * 0.14)
 ax.text(0.5, max(vals) + ymax * 0.2, '−36.7%', ha='center', va='bottom',
         fontsize=11, color=RED, fontweight='bold')
 ax.set_xticks(x); ax.set_xticklabels(labels, color=INK_SECONDARY, fontsize=10.5)
-ax.set_ylabel('Combined Reserve Revenue ($M)', color=INK_SECONDARY, fontsize=10)
+ax.set_ylabel('Combined Reserve Revenue ($M)', color=INK_PRIMARY, fontsize=13)
 ax.set_title('Reserve: Combined Revenue', color=INK_PRIMARY, fontsize=13, fontweight='bold', pad=12, loc='left')
 ax.grid(axis='y', color=GRIDLINE, linewidth=0.8, zorder=0)
 ax.set_axisbelow(True)
 for s in ['top', 'right', 'left']:
     ax.spines[s].set_visible(False)
 ax.spines['bottom'].set_color(BASELINE)
-ax.tick_params(axis='y', colors=INK_MUTED, length=0, labelsize=9)
+ax.tick_params(axis='y', colors=INK_PRIMARY, length=0, labelsize=13)
 ax.tick_params(axis='x', length=0)
 
 fig.suptitle('The Interconnection Limit Trades Reserve Value for Energy Value',

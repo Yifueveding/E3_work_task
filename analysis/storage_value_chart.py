@@ -37,7 +37,7 @@ ax.text(11.55, annual_avg, f'2023 avg: ${annual_avg:.0f}/MWh', color=INK_SECONDA
 for rect, val in zip(bars, spreads):
     ax.text(rect.get_x()+rect.get_width()/2, val+1.0, f'${val:.0f}', ha='center', va='bottom', fontsize=9, color=INK_PRIMARY)
 
-ax.set_ylabel('Avg. Daily DA Price Spread ($/MWh, max-min)', color=INK_SECONDARY, fontsize=10)
+ax.set_ylabel('Avg. Daily DA Price Spread ($/MWh, max-min)', color=INK_PRIMARY, fontsize=13)
 ax.set_title('Storage Arbitrage Opportunity by Month: Avg. Daily Day-Ahead Price Spread, 2023',
              color=INK_PRIMARY, fontsize=12.5, fontweight='bold', pad=14, loc='left')
 ax.set_ylim(0, max(spreads)*1.25)
@@ -47,7 +47,7 @@ for s in ['top','right','left']:
     ax.spines[s].set_visible(False)
 ax.spines['bottom'].set_color(BASELINE)
 ax.tick_params(axis='x', colors=INK_SECONDARY, length=0, labelsize=10)
-ax.tick_params(axis='y', colors=INK_MUTED, length=0, labelsize=9)
+ax.tick_params(axis='y', colors=INK_PRIMARY, length=0, labelsize=13)
 
 plt.tight_layout()
 plt.savefig('analysis/storage_value_by_month.png', facecolor=SURFACE)

@@ -38,14 +38,14 @@ ax1.bar(x - w/2, flat, width=w, color='#c3c2b7', label='Flat monthly avg. DA pri
 ax1.bar(x + w/2, capture, width=w, color=BLUE, label='Solar generation-weighted (capture) price', zorder=3)
 
 ax1.set_xticks(x); ax1.set_xticklabels(months, color=INK_SECONDARY, fontsize=10)
-ax1.set_ylabel('$/MWh', color=INK_SECONDARY, fontsize=10)
+ax1.set_ylabel('$/MWh', color=INK_PRIMARY, fontsize=13)
 ax1.set_ylim(0, max(flat+capture)*1.25)
 ax1.grid(axis='y', color=GRIDLINE, linewidth=0.8, zorder=0)
 ax1.set_axisbelow(True)
 for s in ['top','right','left']:
     ax1.spines[s].set_visible(False)
 ax1.spines['bottom'].set_color(BASELINE)
-ax1.tick_params(axis='y', colors=INK_MUTED, length=0, labelsize=9)
+ax1.tick_params(axis='y', colors=INK_PRIMARY, length=0, labelsize=13)
 ax1.tick_params(axis='x', length=0)
 
 ax1.set_title('Solar Value by Month: Capture Price vs. Flat Average (2023, NYISO N.Y.C.)',

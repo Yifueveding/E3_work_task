@@ -40,7 +40,7 @@ for xi, s, c in zip(x, standalone_sums, combined_totals):
             fontsize=10.5, color=ORANGE, fontweight='bold')
 
 ax.set_xticks(x); ax.set_xticklabels(labels, color=INK_SECONDARY, fontsize=11)
-ax.set_ylabel('2023 Backcast Revenue ($M)', color=INK_SECONDARY, fontsize=10)
+ax.set_ylabel('2023 Backcast Revenue ($M)', color=INK_PRIMARY, fontsize=13)
 ax.set_title('Interaction Benefit Grows Sharply Under a Binding Interconnection Limit',
               color=INK_PRIMARY, fontsize=13.5, fontweight='bold', pad=44, loc='left')
 ax.grid(axis='y', color=GRIDLINE, linewidth=0.8, zorder=0)
@@ -48,7 +48,7 @@ ax.set_axisbelow(True)
 for s in ['top', 'right', 'left']:
     ax.spines[s].set_visible(False)
 ax.spines['bottom'].set_color(BASELINE)
-ax.tick_params(axis='y', colors=INK_MUTED, length=0, labelsize=9)
+ax.tick_params(axis='y', colors=INK_PRIMARY, length=0, labelsize=13)
 ax.tick_params(axis='x', length=0)
 ax.legend(loc='lower center', bbox_to_anchor=(0.5, 1.01), ncol=2, frameon=False,
           fontsize=9.5, labelcolor=INK_SECONDARY)

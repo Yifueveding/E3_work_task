@@ -50,7 +50,7 @@ for rect, val in zip(bars, avgs):
     ax.text(rect.get_x() + rect.get_width()/2, val + 0.9, f'${val:.0f}',
             ha='center', va='bottom', fontsize=9, color=INK_PRIMARY)
 
-ax.set_ylabel('Avg. Day-Ahead Price ($/MWh)', color=INK_SECONDARY, fontsize=10)
+ax.set_ylabel('Avg. Day-Ahead Price ($/MWh)', color=INK_PRIMARY, fontsize=13)
 ax.set_title('NYISO N.Y.C. Zone — Monthly Average Day-Ahead Energy Price, 2023',
              color=INK_PRIMARY, fontsize=13, fontweight='bold', pad=14, loc='left')
 
@@ -63,7 +63,7 @@ for spine in ['top', 'right', 'left']:
     ax.spines[spine].set_visible(False)
 ax.spines['bottom'].set_color(BASELINE)
 ax.tick_params(axis='x', colors=INK_SECONDARY, length=0, labelsize=10)
-ax.tick_params(axis='y', colors=INK_MUTED, length=0, labelsize=9)
+ax.tick_params(axis='y', colors=INK_PRIMARY, length=0, labelsize=13)
 
 plt.tight_layout()
 plt.savefig('analysis/monthly_da_price_2023.png', facecolor=SURFACE)

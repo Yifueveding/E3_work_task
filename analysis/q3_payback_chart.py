@@ -19,8 +19,8 @@ for yi, p, c, r in zip(y, payback, capex, revenue):
     label = f'{p:.0f} yrs  (capex \\${c/1e6:,.0f}M / rev \\${r/1e6:.1f}M/yr)'
     ax.text(p + 1, yi, label, va='center', ha='left', fontsize=9.5, color=INK_PRIMARY)
 
-ax.set_yticks(y); ax.set_yticklabels(configs, color=INK_SECONDARY, fontsize=10.5)
-ax.set_xlabel('Simple Payback — Capex ÷ Annual Energy-Only Revenue (years)', color=INK_SECONDARY, fontsize=10)
+ax.set_yticks(y); ax.set_yticklabels(configs, color=INK_PRIMARY, fontsize=13)
+ax.set_xlabel('Simple Payback — Capex ÷ Annual Energy-Only Revenue (years)', color=INK_PRIMARY, fontsize=13)
 ax.set_title('Simple Payback by Configuration (Energy-Only Revenue, No Financing/Tax/O&M)',
              color=INK_PRIMARY, fontsize=12.5, fontweight='bold', pad=14, loc='left')
 ax.set_xlim(0, max(payback)*1.55)
@@ -29,7 +29,7 @@ ax.set_axisbelow(True)
 for s in ['top','right','left']:
     ax.spines[s].set_visible(False)
 ax.spines['bottom'].set_color(BASELINE)
-ax.tick_params(axis='x', colors=INK_MUTED, length=0, labelsize=9)
+ax.tick_params(axis='x', colors=INK_PRIMARY, length=0, labelsize=13)
 ax.tick_params(axis='y', length=0)
 
 plt.tight_layout()
