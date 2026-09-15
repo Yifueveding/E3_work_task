@@ -1,11 +1,9 @@
 # Storage Dispatch Optimization Model
 
 This document specifies the per-day linear program (LP) used throughout this repository
-to dispatch the battery storage system, in its three variants. All three replace a naive
-"charge the day's 4 lowest-price hours, discharge the 4 highest-price hours" heuristic
-with a true optimum — the LP is free to discover multiple charge/discharge cycles within
-a day when prices oscillate enough to make it profitable (see `analysis/q2.tex`, Q2b, for
-the empirical comparison: the LP earns 14.75% more than the heuristic on 2023 data).
+to dispatch the battery storage system, in its three variants. The LP is free to discover
+multiple charge/discharge cycles within a day when prices oscillate enough to make it
+profitable (see `analysis/q2.tex`, Q2b, for the multi-cycle dispatch detail).
 
 Each day is solved independently (365 LPs per year), using
 [`scipy.optimize.linprog`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.linprog.html)

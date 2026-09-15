@@ -113,10 +113,7 @@ example, April 11 has two separate profitable round trips across the day (an ove
 dip into a morning peak, and a midday dip into an evening peak) --- the optimizer uses 8
 charge hours and 8 discharge hours that day, double a single 4-hour/4-hour cycle, because
 day-ahead prices simply have more usable volatility in a day than one high/low pair can
-capture. Solving this per-day LP across all of 2023 earns 14.75\% more than the naive
-``4 lowest-price hours charge, 4 highest-price hours discharge'' heuristic (\$1.978M vs.\
-\$1.724M) --- large enough that we adopted the LP as the primary method rather than a
-footnote.
+capture.
 
 Annual standalone storage revenue is:
 
@@ -209,14 +206,11 @@ products --- standalone solar earns \$0 in reserve revenue:
 R_{\text{solar reserve}} = \$0
 \]
 
-Storage's reserve capacity is now classified hour-by-hour from the actual Q2b/Q2c LP
-dispatch solution, not a fixed 4-hour/4-hour/16-hour split: an hour where the LP charges
-(and doesn't discharge) offers 50 MW of footroom only; an hour where it discharges (and
-doesn't charge) offers 50 MW of headroom only; an idle hour offers the full 50 MW of
-\emph{both} headroom and footroom simultaneously. Because multi-cycle dispatch (Q2b) uses
-more charge/discharge hours and leaves fewer hours idle than the old single-cycle
-heuristic, standalone storage actually has \emph{less} total reserve capacity to offer
-here than it would under the simpler heuristic:
+Storage's reserve capacity is classified hour-by-hour from the actual Q2b/Q2c LP
+dispatch solution: an hour where the LP charges (and doesn't discharge) offers 50 MW of
+footroom only; an hour where it discharges (and doesn't charge) offers 50 MW of headroom
+only; an idle hour offers the full 50 MW of \emph{both} headroom and footroom
+simultaneously:
 
 \[
 R_{\text{storage reserve}} = \$1.25 \times (312{,}550 + 312{,}550)\text{ MW-hr} = \$781{,}375

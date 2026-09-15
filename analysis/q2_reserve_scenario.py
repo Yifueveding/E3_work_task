@@ -6,7 +6,7 @@ energy-only backcast in q2_revenue.py, at an assumed reserve price of $1.25/MW-h
 
 Requires scipy (same per-day LP dispatch as q2_revenue.py, so that the charge/discharge/
 idle classification used for headroom/footroom matches the multi-cycle-optimized base
-case rather than the old fixed 4-hour heuristic).
+case).
 
 Headroom = capacity available to INCREASE output on call (up-reserve).
 Footroom = capacity available to DECREASE output on call (down-reserve).
@@ -15,14 +15,11 @@ Assumptions (nameplate-based, state-dependent — see chat for alternatives cons
   Solar   - cannot provide reserve. It is a variable, weather-dependent resource with no
             firm/dispatchable capacity commitment, so it does not qualify to offer NYISO
             reserve products; standalone solar earns $0 reserve revenue.
-  Storage - classified hour-by-hour from the actual LP dispatch solution (not a fixed
-            4-hour/4-hour/16-hour split): an hour where the LP charges (and doesn't
-            discharge) offers 50 MW of footroom only; an hour where it discharges (and
-            doesn't charge) offers 50 MW of headroom only; an hour where it does neither
-            (idle) offers the full 50 MW of both headroom and footroom simultaneously.
-            Because multi-cycle dispatch uses more charge/discharge hours and leaves fewer
-            hours idle than the old single-cycle heuristic, this base case actually offers
-            *less* total reserve capacity than the heuristic did.
+  Storage - classified hour-by-hour from the actual LP dispatch solution: an hour where
+            the LP charges (and doesn't discharge) offers 50 MW of footroom only; an hour
+            where it discharges (and doesn't charge) offers 50 MW of headroom only; an
+            hour where it does neither (idle) offers the full 50 MW of both headroom and
+            footroom simultaneously.
   Combined - all reserve capacity comes from the storage component only (identical
             classification logic applied to the combined dispatch, which also has free
             clipped-solar charging); the solar component still cannot offer reserve.

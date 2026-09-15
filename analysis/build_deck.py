@@ -259,9 +259,9 @@ add_text(s, Inches(0.55), Inches(2.24), Inches(12.2), Inches(0.24),
 
 rows = [
     ('Standalone Solar', 'Delivered output = min(Solar Shape × 300 MW-DC, 250 MW-AC inverter limit). Revenue = Σ(delivered MW × DA price).', 0.5),
-    ('Standalone Storage', 'Per-day linear program (50 MW power limit, 200 MWh energy limit, SOC starts at 0) chooses the revenue-maximizing hourly charge/discharge schedule — letting the optimizer find multiple cycles/day when DA prices oscillate enough, rather than assuming one fixed 4-hr cycle (worth +14.75% vs. that heuristic). Perfect day-ahead price foresight; RTE = 100% (per given input); no degradation/cycling cost; energy arbitrage only in this base case (see Reserve Scenario row below).', 1.0),
+    ('Standalone Storage', 'Per-day linear program (50 MW power limit, 200 MWh energy limit, SOC starts at 0) chooses the revenue-maximizing hourly charge/discharge schedule — letting the optimizer find multiple cycles/day when DA prices oscillate enough. Perfect day-ahead price foresight; RTE = 100% (per given input); no degradation/cycling cost; energy arbitrage only in this base case (see Reserve Scenario row below).', 1.0),
     ('Combined Solar + Storage', 'Solar identical to standalone. Storage uses the same per-day LP, except charging can draw up to 50 MW/hr for $0 from that hour\'s otherwise-clipped solar before paying the grid price for any remaining need.', 0.65),
-    ('Reserve Scenario (Q2d)', 'Extension beyond the base exercise: reserve capacity valued at $1.25/MW-hr (midpoint of $1–1.5/MW). Headroom = up-reserve capacity; footroom = down-reserve capacity, classified hour-by-hour from the actual LP dispatch. Solar cannot provide reserve (variable, non-dispatchable) → $0. Storage → +$0.78M — less than a single-cycle heuristic would offer, since multi-cycling leaves fewer idle hours available as reserve. Details on Slide 8.', 0.95),
+    ('Reserve Scenario (Q2d)', 'Extension beyond the base exercise: reserve capacity valued at $1.25/MW-hr (midpoint of $1–1.5/MW). Headroom = up-reserve capacity; footroom = down-reserve capacity, classified hour-by-hour from the actual LP dispatch. Solar cannot provide reserve (variable, non-dispatchable) → $0. Storage → +$0.78M. Details on Slide 8.', 0.95),
 ]
 
 ty = Inches(2.56)
@@ -327,7 +327,7 @@ add_picture_fit(s, IMG + 'q2_energy_plus_reserve_by_config.png', Inches(6.85), I
 
 add_bullets(s, Inches(0.55), Inches(5.15), Inches(12.2), Inches(1.5), [
     'Beyond the base exercise: estimates additional revenue from offering NYISO reserve capacity at $1.25/MW-hr (midpoint of the $1–1.5/MW range you flagged). Headroom = capacity to increase output on call; footroom = capacity to decrease output on call.',
-    'Solar cannot provide reserve — it is a variable, non-dispatchable resource, so it earns $0. Storage is classified hour-by-hour from its actual Q2b/c LP dispatch (footroom while charging, headroom while discharging, both simultaneously while idle) → +$0.78M (+39.5%) — less than a single-cycle heuristic would offer, since multi-cycling leaves fewer idle hours. Combined reserve comes entirely from the storage component → +$0.78M (+3.8%).',
+    'Solar cannot provide reserve — it is a variable, non-dispatchable resource, so it earns $0. Storage is classified hour-by-hour from its actual Q2b/c LP dispatch (footroom while charging, headroom while discharging, both simultaneously while idle) → +$0.78M (+39.5%). Combined reserve comes entirely from the storage component → +$0.78M (+3.8%).',
 ], size=12.5, space_after=6)
 
 add_text(s, Inches(0.55), Inches(6.72), Inches(12.2), Inches(0.3),
@@ -370,7 +370,7 @@ slide_header(s, 'Q3b  ·  Proposed Follow-On Study', 'A More Complete Revenue Fo
 
 items = [
     ('1', 'Forward price shapes', '~3 hrs', 'Replace the 2023 backcast with a forward-looking hourly price shape reflecting expected capacity additions/retirements and load growth (electrification, data centers), grounded in published NYISO / NYSERDA CLCPA outlooks.'),
-    ('2', 'Realistic operating assumptions', '~2 hrs', 'Round-trip efficiency ~85–90% (not 100%), solar degradation (~0.5%/yr), battery degradation/augmentation cost. Q2b already uses a per-day LP that finds multi-cycle dispatch worth +14.75% under a zero-cost assumption — adding a realistic per-cycle degradation cost would temper that toward an economically optimal cycling frequency.'),
+    ('2', 'Realistic operating assumptions', '~2 hrs', 'Round-trip efficiency ~85–90% (not 100%), solar degradation (~0.5%/yr), battery degradation/augmentation cost. Q2b already uses a per-day LP that finds multi-cycle dispatch under a zero-cost assumption — adding a realistic per-cycle degradation cost would temper that toward an economically optimal cycling frequency.'),
     ('3', 'Capacity & ancillary revenue', '~2 hrs', "Add NYISO capacity market (ICAP) and frequency regulation revenue — often the majority of a merchant battery's revenue stack. Q2d sketches an illustrative reserve add-on; a rigorous version (real product rules, co-optimization, capacity market) is still the single biggest gap."),
     ('4', 'Scenario / sensitivity analysis', '~2 hrs', 'High/low cases on load growth, gas prices, and renewable build-out pace, given how uncertain the 10-year price path is.'),
     ('5', 'Full pro forma', '~1 hr', 'Layer in provided capex, O&M, financing, and ITC/IRA tax credit treatment to compute NPV/IRR rather than simple payback.'),
