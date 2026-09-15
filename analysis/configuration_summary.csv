@@ -1,10 +1,28 @@
-Scenario,Metric,Standalone Solar,Standalone Battery,Combined Solar and Storage
-Energy-only,Annual Revenue (million),18.80,1.98,20.79
-Energy-only,Per-unit Energy Value ($/MWh),34.10,15.77,30.69
-Energy-only,Pay-back Period (years),29,72,29
-Interconnection-limit,Annual Revenue (million),15.70,1.98,19.04
-Interconnection-limit,Per-unit Energy Value ($/MWh),34.62,15.77,32.49
-Interconnection-limit,Pay-back Period (years),37,72,32
-Energy + Reserve,Annual Revenue (million),18.80,2.76,21.57
-Energy + Reserve,Per-unit Energy Value ($/MWh),34.10,22.00,31.85
-Energy + Reserve,Pay-back Period (years),29,40,27
+Scenario,Configuration,Metric,Value,Unit
+Energy-only,Standalone Solar,Annual Revenue,18.80,$M
+Energy-only,Standalone Solar,Per-unit Energy Value,34.10,$/MWh
+Energy-only,Standalone Solar,Pay-back Period,29,years
+Energy-only,Standalone Battery,Annual Revenue,1.98,$M
+Energy-only,Standalone Battery,Per-unit Energy Value,15.77,$/MWh
+Energy-only,Standalone Battery,Pay-back Period,72,years
+Energy-only,Combined Solar and Storage,Annual Revenue,20.79,$M
+Energy-only,Combined Solar and Storage,Per-unit Energy Value,30.69,$/MWh
+Energy-only,Combined Solar and Storage,Pay-back Period,29,years
+Interconnection-limit,Standalone Solar,Annual Revenue,15.70,$M
+Interconnection-limit,Standalone Solar,Per-unit Energy Value,34.62,$/MWh
+Interconnection-limit,Standalone Solar,Pay-back Period,37,years
+Interconnection-limit,Standalone Battery,Annual Revenue,1.98,$M
+Interconnection-limit,Standalone Battery,Per-unit Energy Value,15.77,$/MWh
+Interconnection-limit,Standalone Battery,Pay-back Period,72,years
+Interconnection-limit,Combined Solar and Storage,Annual Revenue,19.04,$M
+Interconnection-limit,Combined Solar and Storage,Per-unit Energy Value,32.49,$/MWh
+Interconnection-limit,Combined Solar and Storage,Pay-back Period,32,years
+Energy + Reserve,Standalone Solar,Annual Revenue,18.80,$M
+Energy + Reserve,Standalone Solar,Per-unit Energy Value,34.10,$/MWh
+Energy + Reserve,Standalone Solar,Pay-back Period,29,years
+Energy + Reserve,Standalone Battery,Annual Revenue,2.76,$M
+Energy + Reserve,Standalone Battery,Per-unit Energy Value,22.00,$/MWh
+Energy + Reserve,Standalone Battery,Pay-back Period,40,years
+Energy + Reserve,Combined Solar and Storage,Annual Revenue,21.57,$M
+Energy + Reserve,Combined Solar and Storage,Per-unit Energy Value,31.85,$/MWh
+Energy + Reserve,Combined Solar and Storage,Pay-back Period,27,years
