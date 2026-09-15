@@ -5,11 +5,11 @@ recommendation to a discounted-cash-flow view.
 Assumptions (not given in the exercise inputs, so stated explicitly here, consistent with
 the "simple/quick" spirit of the rest of the analysis):
   - Discount rate: 2% (a low-cost-of-capital assumption -- e.g. low-risk infrastructure /
-    green-bond financing). At the more typical 7% utility WACC, NONE of the three ever
-    reach positive NPV even at an infinite horizon, since the perpetuity value of each
-    project's revenue (Revenue / r) is below its capex -- see the breakeven rates printed
-    below. 2% is chosen specifically because it's below all three breakeven rates, so an
-    actual crossing point exists to plot.
+    green-bond financing). Breakeven rates are solar 4.64%, storage (energy-only) 2.64% /
+    (with reserve) 3.68%, combined (energy-only) 4.67% / (with reserve) 4.85% -- all above
+    2%, so an actual crossing point exists for every configuration to plot. At the more
+    typical 4-7% utility WACC, standalone storage never reaches positive NPV at all
+    (even with reserve revenue), and solar/combined only cross much later (45-51 years).
   - Analysis horizon: 40 years (long enough for standalone storage, the slowest of the
     three, to cross zero).
   - Revenue = energy (day-ahead, LP multi-cycle base case) + the Q2d illustrative reserve
@@ -75,21 +75,20 @@ fig.patch.set_facecolor(SURFACE); ax.set_facecolor(SURFACE)
 
 years_axis = list(range(0, YEARS + 1))
 label_offset = {'solar': 1, 'storage': 2, 'combined': 3}
+end_labels = []  # (raw_value, text, color, fontsize, alpha, fontweight)
 for key, label, color in configs:
     # Energy-only dashed line (skip solar: identical to its solid line, since solar earns $0 reserve)
     if key != 'solar':
         vals_eo = [v / 1e6 for v in npv_energy_only[key]]
         ax.plot(years_axis, vals_eo, color=color, linewidth=1.6, linestyle=(0, (5, 3)), zorder=2, alpha=0.75)
-        ax.text(YEARS + 0.5, vals_eo[-1], f'${vals_eo[-1]:,.0f}M', color=color, fontsize=9,
-                alpha=0.75, va='center', ha='left')
+        end_labels.append([vals_eo[-1], f'${vals_eo[-1]:,.0f}M', color, 9, 0.75, 'normal'])
         cy_eo = crossing_year_energy_only.get(key)
         if cy_eo is not None and cy_eo <= YEARS:
             ax.scatter([cy_eo], [0], facecolor='white', edgecolor=color, s=45, zorder=4, linewidth=1.5)
 
     vals = [v / 1e6 for v in npv_by_year[key]]
     ax.plot(years_axis, vals, color=color, linewidth=2.5, zorder=3, label=label)
-    ax.text(YEARS + 0.5, vals[-1], f'${vals[-1]:,.0f}M', color=color, fontsize=11,
-            fontweight='bold', va='center', ha='left')
+    end_labels.append([vals[-1], f'${vals[-1]:,.0f}M', color, 11, 1.0, 'bold'])
     cy = crossing_year.get(key)
     if cy is not None:
         ax.scatter([cy], [0], color=color, s=55, zorder=4, edgecolor='white', linewidth=1)
@@ -97,6 +96,16 @@ for key, label, color in configs:
         ax.annotate(f'yr {cy}', xy=(cy, 0), xytext=(cy, y_off),
                     textcoords='data', ha='center', fontsize=9.5, color=color, fontweight='bold',
                     arrowprops=dict(arrowstyle='-', color=color, lw=0.8, alpha=0.6))
+
+# Push overlapping end-of-line labels apart (min separation in data $M units)
+MIN_GAP = 22
+end_labels.sort(key=lambda r: r[0])
+for i in range(1, len(end_labels)):
+    if end_labels[i][0] - end_labels[i - 1][0] < MIN_GAP:
+        end_labels[i][0] = end_labels[i - 1][0] + MIN_GAP
+for y_pos, text, color, fontsize, alpha, weight in end_labels:
+    ax.text(YEARS + 0.5, y_pos, text, color=color, fontsize=fontsize, alpha=alpha,
+            fontweight=weight, va='center', ha='left')
 
 ax.plot([], [], color=INK_MUTED, linewidth=1.6, linestyle=(0, (5, 3)), alpha=0.75, label='(dashed = energy-only, no reserve)')
 
