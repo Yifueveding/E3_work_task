@@ -81,24 +81,24 @@ for key, label, color in configs:
     if key != 'solar':
         vals_eo = [v / 1e6 for v in npv_energy_only[key]]
         ax.plot(years_axis, vals_eo, color=color, linewidth=1.6, linestyle=(0, (5, 3)), zorder=2, alpha=0.75)
-        end_labels.append([vals_eo[-1], f'${vals_eo[-1]:,.0f}M', color, 11, 0.75, 'normal'])
+        end_labels.append([vals_eo[-1], f'${vals_eo[-1]:,.0f}M', color, 13, 0.75, 'normal'])
         cy_eo = crossing_year_energy_only.get(key)
         if cy_eo is not None and cy_eo <= YEARS:
             ax.scatter([cy_eo], [0], facecolor='white', edgecolor=color, s=45, zorder=4, linewidth=1.5)
 
     vals = [v / 1e6 for v in npv_by_year[key]]
     ax.plot(years_axis, vals, color=color, linewidth=2.5, zorder=3, label=label)
-    end_labels.append([vals[-1], f'${vals[-1]:,.0f}M', color, 13, 1.0, 'bold'])
+    end_labels.append([vals[-1], f'${vals[-1]:,.0f}M', color, 15, 1.0, 'bold'])
     cy = crossing_year.get(key)
     if cy is not None:
         ax.scatter([cy], [0], color=color, s=55, zorder=4, edgecolor='white', linewidth=1)
         y_off = 40 * label_offset[key]
         ax.annotate(f'yr {cy}', xy=(cy, 0), xytext=(cy, y_off),
-                    textcoords='data', ha='center', fontsize=11.5, color=color, fontweight='bold',
+                    textcoords='data', ha='center', fontsize=13.5, color=color, fontweight='bold',
                     arrowprops=dict(arrowstyle='-', color=color, lw=0.8, alpha=0.6))
 
 # Push overlapping end-of-line labels apart (min separation in data $M units)
-MIN_GAP = 22
+MIN_GAP = 30
 end_labels.sort(key=lambda r: r[0])
 for i in range(1, len(end_labels)):
     if end_labels[i][0] - end_labels[i - 1][0] < MIN_GAP:
