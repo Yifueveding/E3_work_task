@@ -27,8 +27,10 @@ with open('no_interconnection_limit/monthly_da_price_2023.csv', 'w', newline='')
         w.writerow([m, round(a, 2)])
     w.writerow(['Annual Average', round(annual_avg, 2)])
 
-# Chart — single-series bar, dataviz skill mark spec (light mode)
+# Chart — single-series bar w/ seasonal-peak highlight, dataviz skill mark spec (light mode)
 BLUE = '#2a78d6'
+ORANGE = '#eb6834'   # winter peak
+AQUA = '#1baf7a'     # summer peak
 INK_PRIMARY = '#0b0b0b'
 INK_SECONDARY = '#52514e'
 INK_MUTED = '#898781'
@@ -36,19 +38,37 @@ GRIDLINE = '#e1e0d9'
 BASELINE = '#c3c2b7'
 SURFACE = '#fcfcfb'
 
+winter_months = {12, 1, 2}
+summer_months = {6, 7, 8}
+winter_peak_idx = max((m for m in winter_months), key=lambda m: avgs[m - 1]) - 1
+summer_peak_idx = max((m for m in summer_months), key=lambda m: avgs[m - 1]) - 1
+
+colors = [BLUE] * 12
+colors[winter_peak_idx] = ORANGE
+colors[summer_peak_idx] = AQUA
+
 fig, ax = plt.subplots(figsize=(9, 5), dpi=200)
 fig.patch.set_facecolor(SURFACE)
 ax.set_facecolor(SURFACE)
 
-bars = ax.bar(months, avgs, color=BLUE, width=0.62, zorder=3)
+bars = ax.bar(months, avgs, color=colors, width=0.62, zorder=3)
 
 ax.axhline(annual_avg, color=INK_MUTED, linestyle=(0, (3, 3)), linewidth=1.2, zorder=2)
-ax.text(11.55, annual_avg, f'2023 avg: ${annual_avg:.0f}/MWh',
-        color=INK_SECONDARY, fontsize=9.5, va='center', ha='left')
+ax.text(11.55, annual_avg - 2.6, f'2023 avg: ${annual_avg:.0f}/MWh',
+        color=INK_SECONDARY, fontsize=9.5, va='top', ha='left')
 
 for rect, val in zip(bars, avgs):
     ax.text(rect.get_x() + rect.get_width()/2, val + 0.9, f'${val:.0f}',
             ha='center', va='bottom', fontsize=9, color=INK_PRIMARY)
+
+ax.annotate('Winter peak', xy=(winter_peak_idx, avgs[winter_peak_idx] + 2.4),
+            xytext=(winter_peak_idx, avgs[winter_peak_idx] + 9),
+            ha='center', va='bottom', fontsize=9.5, color=ORANGE, fontweight='bold',
+            arrowprops=dict(arrowstyle='-', color=ORANGE, lw=1.1))
+ax.annotate('Summer peak', xy=(summer_peak_idx, avgs[summer_peak_idx] + 2.4),
+            xytext=(summer_peak_idx, avgs[summer_peak_idx] + 9),
+            ha='center', va='bottom', fontsize=9.5, color=AQUA, fontweight='bold',
+            arrowprops=dict(arrowstyle='-', color=AQUA, lw=1.1))
 
 ax.set_ylabel('Avg. Day-Ahead Price ($/MWh)', color=INK_PRIMARY, fontsize=13)
 ax.set_title('NYISO N.Y.C. Zone — Monthly Average Day-Ahead Energy Price, 2023',
