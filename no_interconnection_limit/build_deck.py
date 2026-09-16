@@ -231,16 +231,16 @@ half_w = Inches(6.05)
 add_picture_fit(s, IMG + 'solar_value_by_month.png', Inches(0.4), Inches(1.5), half_w, Inches(3.55))
 add_picture_fit(s, IMG + 'storage_value_by_month.png', Inches(6.85), Inches(1.5), half_w, Inches(3.55))
 
-add_text(s, Inches(0.4), Inches(5.15), half_w, Inches(0.35), 'Solar: most valuable May–Sep', size=13.5, color=BLUE, bold=True)
+add_text(s, Inches(0.4), Inches(5.15), half_w, Inches(0.35), 'Solar: most valuable month — February', size=13.5, color=BLUE, bold=True)
 add_bullets(s, Inches(0.4), Inches(5.55), half_w, Inches(1.7), [
-    'Summer capture price runs 8–17% above the flat average (Jul: $48.89 vs. $41.72) — solar hours line up with A/C-driven peak prices.',
-    'Winter capture price runs below flat average (95–99%) — winter price spikes hit before sunrise / after sunset, which solar misses.',
+    "February has solar's highest capture price ($49.59/MWh) — driven by winter's high overall price level, not solar's own timing.",
+    "Solar's real timing value-add shows up in summer instead: Jul capture beats the flat average by 17% ($48.89 vs. $41.72), since output aligns with A/C-driven peak prices.",
 ], size=12.5)
 
-add_text(s, Inches(6.85), Inches(5.15), half_w, Inches(0.35), 'Storage: most valuable in extreme-weather months', size=13.5, color=ORANGE, bold=True)
+add_text(s, Inches(6.85), Inches(5.15), half_w, Inches(0.35), 'Storage: most valuable month — July', size=13.5, color=ORANGE, bold=True)
 add_bullets(s, Inches(6.85), Inches(5.55), half_w, Inches(1.7), [
-    'Jul ($50/MWh avg. daily spread) and Feb ($43/MWh) are far above the $29 annual average — driven by sharp heat-wave / cold-snap price spikes.',
-    'Shoulder months (Mar–Jun, Aug–Dec) are weakest ($21–30) — mild weather means flatter daily price shapes and less arbitrage opportunity.',
+    'Jul has the largest avg. daily DA spread ($50/MWh) — the single biggest arbitrage opportunity by raw dollar value, driven by sharp heat-wave price spikes.',
+    "Nov is a lower-risk alternative: an above-average spread ($30) paired with one of the smallest DA-RT gaps ($8) — large opportunity with little real-time basis risk (highlighted on chart).",
 ], size=12.5)
 
 # =====================================================================
